@@ -1,0 +1,192 @@
+---
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@1.0.11
+  aws-cli: circleci/aws-cli@0.1.18
+  queue: eddiewebb/queue@1.3.0
+  slack: circleci/slack@3.4.2
+  version-tag: commitdev/version-tag@0.0.3
+
+variables:
+  - &workspace /home/circleci/project
+  - &build-image cimg/node:14.0
+
+aliases:
+  # Shallow Clone - this allows us to cut the 2 minute repo clone down to about 10 seconds for repos with 50,000 commits+
+  - &checkout-shallow
+    name: Checkout (Shallow)
+    command: |
+      #!/bin/sh
+      set -e
+
+      # Workaround old docker images with incorrect $HOME
+      # check https://github.com/docker/docker/issues/2968 for details
+      if [ "${HOME}" = "/" ]
+      then
+        export HOME=$(getent passwd $(id -un) | cut -d: -f6)
+      fi
+
+      mkdir -p ~/.ssh
+
+      echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+      bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==' >> ~/.ssh/known_hosts
+
+      (umask 077; touch ~/.ssh/id_rsa)
+      chmod 0600 ~/.ssh/id_rsa
+      (cat \<<EOF > ~/.ssh/id_rsa
+      $CHECKOUT_KEY
+      EOF
+      )
+
+      # use git+ssh instead of https
+      git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true
+
+      if [ -e /home/circleci/project/.git ]
+      then
+          cd /home/circleci/project
+          git remote set-url origin "$CIRCLE_REPOSITORY_URL" || true
+      else
+          mkdir -p /home/circleci/project
+          cd /home/circleci/project
+          git clone --depth=1 "$CIRCLE_REPOSITORY_URL" .
+      fi
+
+      if [ -n "$CIRCLE_TAG" ]
+      then
+        git fetch --depth=10 --force origin "refs/tags/${CIRCLE_TAG}"
+      elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]
+      then
+      # For PR from Fork
+        git fetch --depth=10 --force origin "$CIRCLE_BRANCH/head:remotes/origin/$CIRCLE_BRANCH"
+      else
+        git fetch --depth=10 --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
+      fi
+
+      if [ -n "$CIRCLE_TAG" ]
+      then
+          git reset --hard "$CIRCLE_SHA1"
+          git checkout -q "$CIRCLE_TAG"
+      elif [ -n "$CIRCLE_BRANCH" ]
+      then
+          git reset --hard "$CIRCLE_SHA1"
+          git checkout -q -B "$CIRCLE_BRANCH"
+      fi
+
+      git reset --hard "$CIRCLE_SHA1"
+      pwd
+
+jobs:
+  checkout_code:
+    docker:
+      - image: *build-image
+    steps:
+      - run: *checkout-shallow
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - .
+
+  unit_test:
+    docker:
+      - image: *build-image
+    working_directory: *workspace
+    steps: # steps that comprise the `build` job
+      - checkout
+      - attach_workspace:
+          at: *workspace
+      - restore_cache: # restores saved cache if no changes are detected since last run
+          keys:
+            - v1-pkg-cache-{{ checksum "yarn.lock" }}
+            - v1-pkg-cache-
+      - run:
+          name: Run unit tests
+          command: |
+            yarn
+            yarn test
+
+      - save_cache: # Store cache in the /go/pkg directory
+          key: v1-pkg-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+
+      - store_test_results:
+          path: test-reports
+
+      - store_artifacts:
+          path: test-reports
+
+      # Requires the SLACK_WEBHOOK
+      - slack/notify-on-failure
+
+  build:
+    docker:
+      - image: *build-image
+    working_directory: *workspace
+    steps: # steps that comprise the `build` job
+      - attach_workspace:
+          at: *workspace
+      - restore_cache: # restores saved cache if no changes are detected since last run
+          keys:
+            - v1-pkg-cache-{{ checksum "yarn.lock" }}
+            - v1-pkg-cache-
+
+      - run:
+          name: Build static side
+          command: |
+            yarn
+            yarn build
+
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - public
+
+      - save_cache: # Store cache in the /go/pkg directory
+          key: v1-pkg-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+
+      - store_test_results:
+          path: test-reports
+
+      - store_artifacts:
+          path: test-reports
+
+      # Requires the SLACK_WEBHOOK
+      - slack/notify-on-failure
+
+  deploy:
+    docker: 
+      - image: cimg/base:2019.10
+    steps:
+      - run: *checkout-shallow
+      - version-tag/get
+      - aws-cli/install
+      - aws-cli/setup
+      - run:
+          name: Upload to S3
+          command: |
+            ls public
+
+workflows:
+    version: 2
+    # The main workflow. Check out the code, build it, push it, deploy to staging, test, deploy to production
+    build_test_and_deploy:
+      jobs:
+        - checkout_code
+
+        - unit_test:
+            requires:
+              - checkout_code
+
+        - build:
+            requires:
+              - unit_test
+
+        - deploy:
+            requires:
+              - build
+            filters:
+              branches:
+                only:  # only branches matching the below regex filters will run
+                  - /^master$/
