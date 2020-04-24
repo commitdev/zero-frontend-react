@@ -91,7 +91,6 @@ jobs:
       - image: *build-image
     working_directory: *workspace
     steps: # steps that comprise the `build` job
-      - checkout
       - attach_workspace:
           at: *workspace
       - restore_cache: # restores saved cache if no changes are detected since last run
@@ -102,7 +101,7 @@ jobs:
           name: Run unit tests
           command: |
             yarn
-            yarn test
+            yarn test --watchAll=false
 
       - save_cache: # Store cache in the /go/pkg directory
           key: v1-pkg-cache-{{ checksum "yarn.lock" }}
