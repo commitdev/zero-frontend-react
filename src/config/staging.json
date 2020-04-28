@@ -1,5 +1,5 @@
 {
     "appName": "<% .Name %>",
     "environment": "staging",
-    "backendURL": "https://<% index .Params `stagingHost` %>"
+    "backendURL": "https://<% index .Params `stagingBackendHost` %>"
 }
