@@ -7,9 +7,11 @@ params:
   # Application config
 
   # production host name
-  productionHost: fe-test.commitzero.com
-  productionBucket: fe-test.commitzero.com
+  productionHostRoot: example.com
+  productionFrontendHost: example.com
+  productionBackendHost: api.example.com
 
   # staging host name
-  stagingHost: fe-test.commitzero.com
-  stagingBucket: fe-test.commitzero.com
+  stagingHostRoot: example.com
+  stagingFrontendHost: example.com
+  stagingBackendHost: api.example.com
