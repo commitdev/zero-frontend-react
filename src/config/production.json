@@ -1,0 +1,5 @@
+{
+    "appName": "<% .Name %>",
+    "environment": "production",
+    "backendURL": "<% index .Params `productionHost` %>"
+}

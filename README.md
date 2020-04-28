@@ -1,3 +1,44 @@
+## Commit Zero
+
+This app is created to work with Commit Zero. You'll need to run the `stack` application against a `config.yaml` file to generate the code.
+
+### Stack Command
+
+```bash
+stack -config <config file> <source directory> <destination directory>
+```
+
+#### Config File
+
+See `example.yml` for the full example.
+
+```yaml
+---
+name: example-commit-zero-frontend
+
+# params are key value pairs passed into templates
+params:
+
+  # Application config
+
+  # production host name
+  productionHost: fe-test.commitzero.com
+  productionBucket: fe-test.commitzero.com
+
+  # staging host name
+  stagingHost: fe-test.commitzero.com
+  stagingBucket: fe-test.commitzero.com
+
+```
+
+_Once you've templated this out, you can remove the above section from this README as it's no longer needed._
+
+---
+
+# <% .Name %>
+
+## React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

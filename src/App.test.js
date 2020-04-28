@@ -1,9 +1,8 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+// import React from 'react';
+// import { act, render, screen } from '@testing-library/react';
+// import App from './App';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/zero/i);
-  expect(linkElement).toBeInTheDocument();
+test('Renders Commit Zero heading', () => {
+  //TODO
+  expect("test").toBe("test")
 });

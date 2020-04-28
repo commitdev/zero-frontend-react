@@ -24,3 +24,6 @@ yarn-error.log*
 
 # CircleCI
 .circleci/config-compiled.yml
+
+# Commit0
+demo-app

@@ -1,11 +1,9 @@
 ---
 version: 2.1
 orbs:
-  aws-s3: circleci/aws-s3@1.0.11
-  aws-cli: circleci/aws-cli@0.1.18
+  aws-s3: circleci/aws-s3@1.0.15
   queue: eddiewebb/queue@1.3.0
   slack: circleci/slack@3.4.2
-  version-tag: commitdev/version-tag@0.0.3
 
 variables:
   - &workspace /home/circleci/project
@@ -138,34 +136,30 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci/project
           paths:
-            - public
+            - build
 
       - save_cache: # Store cache in the /go/pkg directory
           key: v1-pkg-cache-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
 
-      - store_test_results:
-          path: test-reports
-
-      - store_artifacts:
-          path: test-reports
-
       # Requires the SLACK_WEBHOOK
       - slack/notify-on-failure
 
   deploy:
     docker: 
-      - image: cimg/base:2019.10
+      - image: cimg/python:3.6
+    parameters:
+      bucket:
+        description: The S3 Bucket to sync files to.
+        type: string
     steps:
-      - run: *checkout-shallow
-      - version-tag/get
-      - aws-cli/install
-      - aws-cli/setup
-      - run:
-          name: Upload to S3
-          command: |
-            ls public
+      - attach_workspace:
+          at: *workspace
+      - aws-s3/sync:
+          from: build
+          overwrite: true
+          to: 's3://<< parameters.bucket >>'
 
 workflows:
     version: 2
@@ -183,8 +177,22 @@ workflows:
               - unit_test
 
         - deploy:
+            name: deploy_staging
             requires:
               - build
+            bucket: <% index .Params `stagingBucket` %>
+            # Depending on your development flow you may want to also only deploy to staging on master.
+            # filters:
+            #   branches:
+            #     only:  # only branches matching the below regex filters will run
+            #       - /^master$/
+
+        - deploy:
+            name: deploy_production
+            requires:
+              - build
+              - deploy_staging
+            bucket: <% index .Params `productionBucket` %>
             filters:
               branches:
                 only:  # only branches matching the below regex filters will run

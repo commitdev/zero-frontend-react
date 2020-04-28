@@ -1,6 +1,9 @@
 .App {
   text-align: center;
   background-color: white;
+  font-family: 'Montserrat';
+  padding: 0;
+  margin: 0;
 }
 
 .App-logo {
@@ -10,6 +13,7 @@
 .App-header h1 {
   font-size: calc(1/12 * 100vw);
   margin: 0;
+  margin-top: calc(-1/25 * 100vh);
 }
 
 .App-header {

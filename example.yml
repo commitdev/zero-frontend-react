@@ -1,0 +1,15 @@
+---
+name: example-commit-zero-frontend
+
+# params are key value pairs passed into templates
+params:
+
+  # Application config
+
+  # production host name
+  productionHost: fe-test.commitzero.com
+  productionBucket: fe-test.commitzero.com
+
+  # staging host name
+  stagingHost: fe-test.commitzero.com
+  stagingBucket: fe-test.commitzero.com
