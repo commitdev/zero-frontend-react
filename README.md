@@ -1,11 +1,11 @@
 ## Commit Zero
 
-This app is created to work with Commit Zero. You'll need to run the `stack` application against a `config.yaml` file to generate the code.
+This app is created to work with Commit Zero. You'll need to run the `zero` application against a `zero.yml` file to generate the code.
 
-### Stack Command
+### Zero Command
 
 ```bash
-stack -config <config file> <source directory> <destination directory>
+zero -config <config file> <source directory> <destination directory>
 ```
 
 #### Config File
