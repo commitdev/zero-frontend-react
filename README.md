@@ -84,3 +84,15 @@ docker build . -t zero-deployable-backend
 
 docker run -p 8080:8080 -e SERVER_PORT=8080 -e POD_NAME="Fake POD name." zero-deployable-backend
 ```
+
+### Environment Configs
+
+These are set by `REACT_APP_CONFIG` enviroment variable at build time. This corresponds to a json file in the config directory.
+
+For example to build the staging site and host it you would use:
+
+```zsh
+REACT_APP_CONFIG=staging yarn build
+
+serve -s build
+```
