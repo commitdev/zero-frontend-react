@@ -140,11 +140,12 @@ jobs:
           command: |
             yarn
             REACT_APP_CONFIG=<< parameters.config >> yarn build
+            mv build build_<< parameters.config >>
 
       - persist_to_workspace:
           root: /home/circleci/project
           paths:
-            - build
+            - build_<< parameters.config >>
 
       - save_cache: # Store cache in the /go/pkg directory
           key: v1-pkg-cache-{{ checksum "yarn.lock" }}
@@ -158,6 +159,13 @@ jobs:
     docker:
       - image: cimg/python:3.6
     parameters:
+      config:
+        description: |
+          The config file you want to build the app using. 
+          E.g. 'development' would load configurations from 'config/development.json'
+        type: enum
+        enum: ["development", "staging", "production"]
+        default: production
       bucket:
         description: The S3 Bucket to sync files to.
         type: string
@@ -165,7 +173,7 @@ jobs:
       - attach_workspace:
           at: *workspace
       - aws-s3/sync:
-          from: build
+          from: build_<< parameters.config >>
           overwrite: true
           to: 's3://<< parameters.bucket >>'
 
@@ -181,13 +189,22 @@ workflows:
               - checkout_code
 
         - build:
+            name: build_staging
+            config: staging
             requires:
-              - unit_test
+              - checkout_code
+
+        - build:
+            name: build_production
+            config: production
+            requires:
+              - checkout_code
 
         - deploy:
             name: deploy_staging
+            config: staging
             requires:
-              - build
+              - build_staging
             bucket: <% index .Params `stagingFrontendHost` %>
             # Depending on your development flow you may want to also only deploy to staging on master.
             # filters:
@@ -198,8 +215,8 @@ workflows:
         - deploy:
             name: deploy_production
             requires:
-              - build
-              - deploy_staging
+              - unit_test
+              - build_production
             bucket: <% index .Params `productionFrontendHost` %>
             filters:
               branches:
