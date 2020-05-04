@@ -119,6 +119,14 @@ jobs:
     docker:
       - image: *build-image
     working_directory: *workspace
+    parameters:
+      config:
+        description: |
+          The config file you want to build the app using. 
+          E.g. 'development' would load configurations from 'config/development.json'
+        type: enum
+        enum: ["development", "staging", "production"]
+        default: production
     steps: # steps that comprise the `build` job
       - attach_workspace:
           at: *workspace
@@ -131,7 +139,7 @@ jobs:
           name: Build static side
           command: |
             yarn
-            yarn build
+            REACT_APP_CONFIG=<< parameters.config >> yarn build
 
       - persist_to_workspace:
           root: /home/circleci/project

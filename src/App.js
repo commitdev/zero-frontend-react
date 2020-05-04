@@ -7,9 +7,9 @@ import InfoPanel from "./components/Info";
 
 // Set config based on the environment variable the build was run under.
 let config = {};
-if (process.env.NODE_ENV === "production") {
+if (process.env.REACT_APP_CONFIG === "production") {
   config = require("./config/production.json");
-} else if (process.env.NODE_ENV === "staging") {
+} else if (process.env.REACT_APP_CONFIG === "staging") {
   config = require("./config/staging.json");
 } else {
   config = require("./config/development.json");
