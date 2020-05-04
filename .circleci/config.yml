@@ -147,7 +147,7 @@ jobs:
       - slack/notify-on-failure
 
   deploy:
-    docker: 
+    docker:
       - image: cimg/python:3.6
     parameters:
       bucket:
@@ -180,7 +180,7 @@ workflows:
             name: deploy_staging
             requires:
               - build
-            bucket: <% index .Params `stagingBucket` %>
+            bucket: <% index .Params `stagingFrontendHost` %>
             # Depending on your development flow you may want to also only deploy to staging on master.
             # filters:
             #   branches:
@@ -192,7 +192,7 @@ workflows:
             requires:
               - build
               - deploy_staging
-            bucket: <% index .Params `productionBucket` %>
+            bucket: <% index .Params `productionFrontendHost` %>
             filters:
               branches:
                 only:  # only branches matching the below regex filters will run
