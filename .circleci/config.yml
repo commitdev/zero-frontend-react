@@ -112,7 +112,7 @@ jobs:
       - store_artifacts:
           path: test-reports
 
-      # Requires the SLACK_WEBHOOK
+      # Requires the SLACK_WEBHOOK env var to be set
       - slack/notify-on-failure
 
   build:
@@ -169,9 +169,16 @@ jobs:
       bucket:
         description: The S3 Bucket to sync files to.
         type: string
+      region:
+        type: string
+        default: ''
+        description: |
+          The region to use for AWS operations.
     steps:
       - attach_workspace:
           at: *workspace
+      - run: # Required by aws-cli
+          command: echo 'export AWS_REGION=<< parameters.region >>' >> $BASH_ENV
       - aws-s3/sync:
           from: build_<< parameters.config >>
           overwrite: true
@@ -205,7 +212,8 @@ workflows:
             config: staging
             requires:
               - build_staging
-            bucket: <% index .Params `stagingFrontendHost` %>
+            bucket: "<% index .Params `stagingFrontendHost` %>"
+            region: "<% index .Params `region` %>"
             # Depending on your development flow you may want to also only deploy to staging on master.
             # filters:
             #   branches:
@@ -217,7 +225,8 @@ workflows:
             requires:
               - unit_test
               - build_production
-            bucket: <% index .Params `productionFrontendHost` %>
+            bucket: "<% index .Params `productionFrontendHost` %>"
+            region: "<% index .Params `region` %>"
             filters:
               branches:
                 only:  # only branches matching the below regex filters will run
