@@ -122,7 +122,7 @@ jobs:
     parameters:
       config:
         description: |
-          The config file you want to build the app using. 
+          The config file you want to build the app using.
           E.g. 'development' would load configurations from 'config/development.json'
         type: enum
         enum: ["development", "staging", "production"]
@@ -161,7 +161,7 @@ jobs:
     parameters:
       config:
         description: |
-          The config file you want to build the app using. 
+          The config file you want to build the app using.
           E.g. 'development' would load configurations from 'config/development.json'
         type: enum
         enum: ["development", "staging", "production"]
@@ -178,11 +178,17 @@ jobs:
       - attach_workspace:
           at: *workspace
       - run: # Required by aws-cli
+          name: Set AWS region var
           command: echo 'export AWS_REGION=<< parameters.region >>' >> $BASH_ENV
       - aws-s3/sync:
           from: build_<< parameters.config >>
           overwrite: true
           to: 's3://<< parameters.bucket >>'
+     - run:
+          name: Invalidate Cloudfront
+          command: |
+            export DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(@, '<< parameters.bucket >>')]].Id | [0]" | tr -d '"')
+            aws cloudfront create-invalidation --distribution-id ${DIST_ID} --paths "/*"
 
 workflows:
     version: 2
