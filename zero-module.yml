@@ -1,0 +1,33 @@
+name: deployable-backend
+description: 'zero module for a deployable single page application based on Create React App and deployed to S3/Cloudfront'
+author: 'Commit'
+
+template:
+  strictMode: true
+  delimiters:
+    - '<%'
+    - '%>'
+  inputDir: 'templates'
+  outputDir: 'frontend'
+
+requiredCredentials:
+  - aws
+  - circleci
+  - github
+
+parameters:
+  - field: region
+    label: Select AWS Region
+    options:
+      - "us-west-1"
+      - "us-west-2"
+      - "us-east-1"
+      - "us-east-2"
+  - field: productionFrontendHost
+    label: Production Frontend Host Name (e.g. app.mydomain.com)
+  - field: productionBackendHost
+    label: Production Backend Host Name (e.g. api.mydomain.com)
+  - field: stagingFrontendHost
+    label: Staging Frontend Host Name (e.g. app.mydomain-staging.com)
+  - field: stagingBackendHost
+    label: Staging Backend Host Name (e.g. api.mydomain-staging.com)
