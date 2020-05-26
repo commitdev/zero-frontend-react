@@ -184,7 +184,7 @@ jobs:
           from: build_<< parameters.config >>
           overwrite: true
           to: 's3://<< parameters.bucket >>'
-     - run:
+      - run:
           name: Invalidate Cloudfront
           command: |
             export DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(@, '<< parameters.bucket >>')]].Id | [0]" | tr -d '"')
