@@ -1,3 +1,11 @@
+# The following parameters are required:
+# - AWS_REGION
+# - AWS_ACCESS_KEY
+# - AWS_SECRET_ACCESS_KEY
+# - GITHUB_ORG
+# - GITHUB_REPO
+# - CIRCLECI_TOKEN
+#
 
 run:
 	@echo "Set CIRCLECI environment variables\n"
