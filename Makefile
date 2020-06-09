@@ -1,15 +1,11 @@
 # The following parameters are required:
-# - AWS_REGION
-# - AWS_ACCESS_KEY_ID
-# - AWS_SECRET_ACCESS_KEY
 # - GITHUB_ORG
 # - GITHUB_REPO
 # - CIRCLECI_TOKEN
 #
 
-AWS_ACCESS_KEY_ID := $(shell aws secretsmanager get-secret-value --secret-id=aws_access_key_id | jq -r '.SecretString')
-AWS_SECRET_ACCESS_KEY := $(shell aws secretsmanager get-secret-value --secret-id=aws_secret_access_key | jq -r '.SecretString')
-CIRCLECI_TOKEN := $(shell aws secretsmanager get-secret-value --secret-id=circleci_api_key | jq -r '.SecretString')
+AWS_ACCESS_KEY_ID := $(shell aws secretsmanager get-secret-value --secret-id=ci-user-aws-keys | jq -r '.SecretString'| jq -r .access_key_id)
+AWS_SECRET_ACCESS_KEY := $(shell aws secretsmanager get-secret-value --secret-id=ci-user-aws-keys | jq -r '.SecretString'| jq -r .secret_key)
 
 run:
 	@echo "Set CIRCLECI environment variables\n"
