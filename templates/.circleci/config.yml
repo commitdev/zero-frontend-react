@@ -213,7 +213,7 @@ workflows:
             config: staging
             requires:
               - build_staging
-            bucket: "<% index .Params `stagingFrontendHost` %>"
+            bucket: "<% index .Params `stagingFrontendSubdomain` %><% index .Params `stagingHostRoot` %>"
             region: "<% index .Params `region` %>"
             # Depending on your development flow you may want to also only deploy to staging on master.
             # filters:
@@ -226,7 +226,7 @@ workflows:
             requires:
               - unit_test
               - build_production
-            bucket: "<% index .Params `productionFrontendHost` %>"
+            bucket: "<% index .Params `productionFrontendSubdomain` %><% index .Params `productionHostRoot` %>"
             region: "<% index .Params `region` %>"
             filters:
               branches:

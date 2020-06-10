@@ -1,5 +1,5 @@
 {
     "appName": "<% .Name %>",
     "environment": "production",
-    "backendURL": "https://<% index .Params `productionBackendHost` %>"
+    "backendURL": "https://<% index .Params `productionBackendSubdomain` %><% index .Params `productionHostRoot` %>"
 }
