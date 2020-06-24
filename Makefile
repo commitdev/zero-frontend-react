@@ -3,6 +3,8 @@
 # - CIRCLECI_API_KEY
 #
 
+AWS_ACCESS_KEY_ID := $(shell aws secretsmanager get-secret-value --secret-id=ci-user-aws-keys${randomSeed} | jq -r '.SecretString'| jq -r .access_key_id)
+AWS_SECRET_ACCESS_KEY := $(shell aws secretsmanager get-secret-value --secret-id=ci-user-aws-keys${randomSeed} | jq -r '.SecretString'| jq -r .secret_key)
 GITHUB_ORG := $(shell echo ${REPOSITORY} | cut -d "/" -f 2)
 GITHUB_REPO := $(shell echo ${REPOSITORY} | cut -d "/" -f 3)
 
