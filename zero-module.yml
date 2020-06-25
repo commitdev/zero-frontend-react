@@ -2,6 +2,9 @@ name: deployable-frontend
 description: 'zero module for a deployable single page application based on Create React App and deployed to S3/Cloudfront'
 author: 'Commit'
 
+dependsOn:
+- zero-aws-eks-stack
+
 template:
   strictMode: true
   delimiters:
