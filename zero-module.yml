@@ -1,4 +1,4 @@
-name: deployable-frontend
+name: zero-deployable-react-frontend
 description: 'zero module for a deployable single page application based on Create React App and deployed to S3/Cloudfront'
 author: 'Commit'
 
