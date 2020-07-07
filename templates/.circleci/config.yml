@@ -147,8 +147,8 @@ jobs:
           paths:
             - "node_modules"
 
-      # Requires the SLACK_WEBHOOK
-      - slack/notify-on-failure
+      # Requires the SLACK_WEBHOOK env var to be set
+      # - slack/notify-on-failure
 
   deploy:
     docker:
