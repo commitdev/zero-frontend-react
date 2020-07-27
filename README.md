@@ -1,7 +1,7 @@
 # Zero Deployable Frontend
 
 This is a [Zero] module which sets up a
-service which can be deployed to the environment set up with [zero-aws-eks-stack][zero-infra].
+React web-app bundled statically served through CloudFront and S3 from the [zero-aws-eks-stack][zero-infra].
 
 The `/templates` folder is meant to be filled in via [Zero][zero] and results in Simple React application. It also contains a simple CircleCI pipeline which defines how to build and deploy the service.
 
@@ -67,7 +67,7 @@ Why is my frontend application not yet accesible?
 
 ### Backend Repo
 
-The corresponding frontend for this app is [zero-deployable-backend].
+The corresponding backend for this app is [zero-deployable-backend].
 
 ## Other links
 
