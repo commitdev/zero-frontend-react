@@ -16,6 +16,7 @@ This repository is framework/business-logic agnostic; mainly showcasing some uni
 ## Repository structure
 
 ___
+
 ```sh
 /   # file in the root directory is for initializing the user's repo and declaring metadata
 |-- Makefile                        #make command triggers the initialization of repository
@@ -42,7 +43,7 @@ ___
 
 ## Prerequisites
 
-- Have CircleCI and Github token setup with the Zero project.
+- Have CircleCI and GitHub token setup with the Zero project.
 - CI-user created via EKS-stack with access to AWS S3.
 
 ___
@@ -52,7 +53,7 @@ ___
 This step is meant to be executed during `zero apply`, includes following steps:
 
 - Adding environment variables to CircleCI project.
-- Linking the CircleCi with the github repository
+- Linking the CircleCi with the GitHub repository
   - Linking the circleCI will automatically trigger the first build and deploy your application to AWS S3
 
 ### Backend Repo
