@@ -18,9 +18,15 @@ Your repository comes with a end-to-end CI/CD pipeline, which includes the follo
 
 1. Checkout
 2. Unit Tests
-3. Build for staging & production
+3. Build for Staging
 4. Deploy Staging
-5. Deploy Production
+5. Build for Production
+6. Deploy Production
+
+The *Deploy* step does a:
+
+- AWS S3 Bucket Sync
+- Cloudfront Invalidation
 
 To learn more your pipeline checkout your [CircleCi config file](.circleci/config.yml)
 ___

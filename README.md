@@ -5,13 +5,14 @@ service which can be deployed to the environment set up with [zero-aws-eks-stack
 
 The `/templates` folder is meant to be filled in via [Zero][zero] and results in Simple React application. It also contains a simple CircleCI pipeline which defines how to build and deploy the service.
 
-This repository is framework/business-logic agnostic; mainly showcasing some universal best practices:
+This repository is business-logic agnostic; mainly showcasing some universal best practices:
 
 - Creating an optimized build of your frontend application.
-
 - Out of the box CI/CD flow CircleCi.
   - testing
-  - uploading build to an AWS S3 bucket.
+  - building your web-app as a static distribution in /dist folder.
+  - syncs the built bundle to AWS S3.
+  - invalidates Cloudfront cached version.
 
 ## Repository structure
 
@@ -25,7 +26,7 @@ ___
 |   templates/
 |   |
 |   |-- docs/
-|   |   | create-react-app.md       #contains documentation on how work with your react application and external links to developer resources.
+|   |   | create-react-app.md       #documentation on how work with your react application and external developer resources.
 |   |-- public/
 |   |   |-- favicon.ico
 |   |   |-- index.html
@@ -55,6 +56,14 @@ This step is meant to be executed during `zero apply`, includes following steps:
 - Adding environment variables to CircleCI project.
 - Linking the CircleCi with the GitHub repository
   - Linking the circleCI will automatically trigger the first build and deploy your application to AWS S3
+
+___
+
+## FAQ
+
+Why is my frontend application not yet accesible?
+
+- It takes about 20 - 35 mins for your deployed application to be globally available through AWS CloudFront CDN.
 
 ### Backend Repo
 
