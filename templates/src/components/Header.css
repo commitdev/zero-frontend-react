@@ -1,0 +1,28 @@
+.App-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #000242;
+  color: #ffffff;
+  height: 50px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+.App-header ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.App-header a {
+  color: #ffffff;
+}
+
+.Header-logo {
+  height: 25px;
+}
+
+.Header-logo img {
+  height: 25px;
+}

@@ -1,0 +1,19 @@
+.Home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: calc(1 / 12 * 100vh);
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+.App-logo {
+  width: calc(1 / 8 * 100vw);
+}
+
+.Home h1 {
+  font-size: calc(1 / 12 * 100vw);
+  margin: 0;
+  margin-top: calc(-1 / 25 * 100vh);
+}
