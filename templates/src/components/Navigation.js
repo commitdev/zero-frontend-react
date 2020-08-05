@@ -15,7 +15,7 @@ function AuthenticatedLinks() {
         <Link to="/user-settings">User Settings</Link>
       </li>
       <li>
-        <Link to="/logout">Logout</Link>
+        <Link to="/auth/logout">Logout</Link>
       </li>
     </React.Fragment>
   )
@@ -25,10 +25,10 @@ function UnauthenticatedLinks() {
   return (
     <React.Fragment>
       <li>
-        <Link to="/signup">Sign Up</Link>
+        <Link to="/auth/sign-up">Sign Up</Link>
       </li>
       <li>
-        <Link to="/login">Login</Link>
+        <Link to="/auth/login">Login</Link>
       </li>
     </React.Fragment>
   )

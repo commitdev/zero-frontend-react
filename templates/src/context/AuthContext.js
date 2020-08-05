@@ -3,8 +3,6 @@ import React, { useReducer } from 'react'
 const LOGIN_ACTION = 'login'
 const LOGOUT_ACTION = 'logout'
 
-// TODO: handle user that has valid token
-
 const AuthContext = React.createContext()
 const initialState = {
   isAuthenticated: false,
@@ -15,7 +13,6 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case LOGIN_ACTION:
-      // TODO: store token (user?) in cookie
       return {
         ...state,
         isAuthenticated: true,
@@ -23,7 +20,6 @@ const reducer = (state, action) => {
         token: action.payload.token,
       }
     case LOGOUT_ACTION:
-      // TODO: remove cookies
       return {
         ...state,
         isAuthenticated: false,

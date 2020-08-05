@@ -8,6 +8,8 @@ import {
 
 import Home from './pages/Home'
 import Login from './pages/Login'
+import SignUp from './pages/SignUp'
+import Logout from './pages/Logout'
 import Dashboard from './pages/Dashboard'
 import UserSettings from './pages/UserSettings'
 import PageNotFound from './pages/PageNotFound'
@@ -50,13 +52,19 @@ function App() {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route path="/login">
+            <Route path="/auth/login">
               <Login />
+            </Route>
+            <Route path="/auth/sign-up">
+              <SignUp />
+            </Route>
+            <Route path="/auth/logout">
+              <Logout />
             </Route>
             <PrivateRoute path="/dashboard">
               <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/user-settings">
+            <PrivateRoute path="/settings">
               <UserSettings />
             </PrivateRoute>
             <Route path="*">

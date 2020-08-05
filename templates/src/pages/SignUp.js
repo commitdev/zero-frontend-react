@@ -13,7 +13,7 @@ const initialState = {
   errorMessage: null,
 }
 
-function Login() {
+function SignUp() {
   const { dispatch } = useContext(AuthContext)
   const [data, setData] = useState(initialState)
   const history = useHistory()
@@ -23,7 +23,7 @@ function Login() {
 
   if (queryParams.get('request') === null) {
     // TODO: use real URL and let it trigger redirect
-    history.replace('/auth/login?request=fake_request_id')
+    history.replace('/auth/sign-up?request=fake_request_id')
     return ''
   }
 
@@ -80,7 +80,7 @@ function Login() {
     <div className="login-container">
       <div className="login-card">
         <form onSubmit={handleFormSubmit} className="login-form">
-          <h1>Login</h1>
+          <h1>Sign Up</h1>
 
           <label htmlFor="email">
             Email
@@ -110,11 +110,11 @@ function Login() {
             <span className="form-error">{data.errorMessage}</span>
           )}
 
-          <button disabled={data.isSubmitting}>Login</button>
+          <button disabled={data.isSubmitting}>Sign Up</button>
         </form>
       </div>
     </div>
   )
 }
 
-export default Login
+export default SignUp

@@ -7,6 +7,24 @@ const sleep = (time = 1000) =>
  * @param {string} email
  * @param {string} password
  */
+async function signUp(email, password) {
+  if (!email || !password) {
+    throw new Error('Missing email and/or password')
+  }
+
+  // TODO: wire up api call
+  return sleep(1000).then(() => ({
+    user: {
+      email,
+    },
+  }))
+}
+
+/**
+ * Attempt to login to account with given credentials
+ * @param {string} email
+ * @param {string} password
+ */
 async function login(email, password) {
   if (!email || !password) {
     throw new Error('Missing email and/or password')
@@ -17,7 +35,6 @@ async function login(email, password) {
     user: {
       email,
     },
-    token: 'fakeToken',
   }))
 }
 
@@ -25,7 +42,7 @@ async function login(email, password) {
  * Logout of current account
  */
 async function logout() {
-  // TODO: wire up api call
+  // TODO: wire up api call if needed...
 }
 
-export { login, logout }
+export { signUp, login, logout }
