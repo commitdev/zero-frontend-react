@@ -1,27 +1,30 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom'
+
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import UserSettings from './pages/UserSettings'
 import PageNotFound from './pages/PageNotFound'
 
 import './App.css'
-import Header from './components/Header'
+import Navigation from './components/Navigation'
+import { AuthProvider, AuthContext } from './context/AuthContext'
 
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
 function PrivateRoute({ children, ...rest }) {
-  // TODO: perform actual check
-  const isAuthenticated = false
+  const { state } = useContext(AuthContext)
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        isAuthenticated ? (
+        state.isAuthenticated ? (
           children
         ) : (
           <Redirect
@@ -39,21 +42,29 @@ function PrivateRoute({ children, ...rest }) {
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Header />
+      <AuthProvider>
+        <div className="App">
+          <Navigation />
 
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="*">
-            <PageNotFound />
-          </Route>
-        </Switch>
-      </div>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute path="/dashboard">
+              <Dashboard />
+            </PrivateRoute>
+            <PrivateRoute path="/user-settings">
+              <UserSettings />
+            </PrivateRoute>
+            <Route path="*">
+              <PageNotFound />
+            </Route>
+          </Switch>
+        </div>
+      </AuthProvider>
     </Router>
   )
 }

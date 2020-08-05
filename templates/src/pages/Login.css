@@ -1,0 +1,38 @@
+.login-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.login-card {
+  border: 1px solid #000;
+  border-radius: 3px;
+  margin-top: calc(1 / 12 * 100vh);
+  padding: 16px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login-form h1 {
+  margin-top: 4px;
+}
+
+.login-form label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.login-form input {
+  width: 16em;
+  margin-left: 8px;
+}
+
+.form-error {
+  color: red;
+  margin-bottom: 12px;
+}

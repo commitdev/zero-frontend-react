@@ -1,4 +1,4 @@
-.App-header {
+.app-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -6,23 +6,30 @@
   color: #ffffff;
   height: 50px;
   padding: 10px 20px;
-  box-sizing: border-box;
 }
 
-.App-header ul {
+.app-nav-links {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
 }
 
-.App-header a {
+.app-nav-links li {
+  margin: 0px 16px;
+}
+.app-nav-links li:last-of-type {
+  margin-right: 0px;
+}
+
+.app-nav a {
   color: #ffffff;
 }
 
-.Header-logo {
+.app-nav-logo {
   height: 25px;
 }
 
-.Header-logo img {
+.app-nav-logo img {
   height: 25px;
 }
