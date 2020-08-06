@@ -1,0 +1,25 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.auth-form h1 {
+  margin-top: 4px;
+}
+
+.auth-form label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.auth-form input {
+  width: 16em;
+  margin-left: 8px;
+}
+
+.auth-form-error {
+  color: red;
+  margin-bottom: 12px;
+}

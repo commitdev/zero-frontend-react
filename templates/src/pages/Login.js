@@ -1,21 +1,14 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import isEmail from 'validator/es/lib/isEmail'
 import { AuthContext, LOGIN_ACTION } from '../context/AuthContext'
 import { login } from '../api/authentication'
+import AuthForm from '../components/AuthForm'
+import Card from '../components/Card'
 
 import './Login.css'
 
-const initialState = {
-  email: '',
-  password: '',
-  isSubmitting: false,
-  errorMessage: null,
-}
-
 function Login() {
   const { dispatch } = useContext(AuthContext)
-  const [data, setData] = useState(initialState)
   const history = useHistory()
   const location = useLocation()
   const queryParams = new URLSearchParams(useLocation().search)
@@ -27,38 +20,7 @@ function Login() {
     return ''
   }
 
-  const handleInputChange = (event) => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value,
-    })
-  }
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault()
-
-    if (!isEmail(data.email)) {
-      setData({
-        ...data,
-        errorMessage: 'Invalid email',
-      })
-      return
-    }
-
-    if (!data.password) {
-      setData({
-        ...data,
-        errorMessage: 'Missing password',
-      })
-      return
-    }
-
-    setData({
-      ...data,
-      isSubmitting: true,
-      errorMessage: null,
-    })
-
+  function handleFormSubmit(data, setErrorMessage) {
     login(data.email, data.password)
       .then((resJson) => {
         dispatch({
@@ -68,51 +30,21 @@ function Login() {
         history.replace(from)
       })
       .catch((error) => {
-        setData({
-          ...data,
-          isSubmitting: false,
-          errorMessage: error.message || error.statusText,
-        })
+        setErrorMessage(error.message || error.statusText)
       })
   }
 
   return (
     <div className="login-container">
-      <div className="login-card">
-        <form onSubmit={handleFormSubmit} className="login-form">
-          <h1>Login</h1>
-
-          <label htmlFor="email">
-            Email
-            <input
-              type="text"
-              value={data.email}
-              onChange={handleInputChange}
-              disabled={data.isSubmitting}
-              name="email"
-              id="email"
-            />
-          </label>
-
-          <label htmlFor="password">
-            Password
-            <input
-              type="password"
-              value={data.password}
-              onChange={handleInputChange}
-              disabled={data.isSubmitting}
-              name="password"
-              id="password"
-            />
-          </label>
-
-          {data.errorMessage && (
-            <span className="form-error">{data.errorMessage}</span>
-          )}
-
-          <button disabled={data.isSubmitting}>Login</button>
-        </form>
-      </div>
+      <Card>
+        <AuthForm
+          {...{
+            title: 'Login New',
+            submitAction: handleFormSubmit,
+            submitActionLabel: 'Login',
+          }}
+        />
+      </Card>
     </div>
   )
 }
