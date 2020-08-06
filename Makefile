@@ -20,6 +20,6 @@ summary:
 	@echo "zero-deployable-react-frontend:"
 	@echo "- Repository URL: ${REPOSITORY}"
 	@echo "- Deployment Pipeline URL: https://app.circleci.com/pipelines/github/${GITHUB_ORG}/${GITHUB_REPO}"
-	@echo $(shell echo ${ENVIRONMENT} | grep production > /dev/null && echo "- Production Landing Page: ${productionFrontendSubdomain}${productionHostRoot}")
-	@echo $(shell echo ${ENVIRONMENT} | grep staging > /dev/null && echo "- Staging Landing Page: ${stagingFrontendSubdomain}${stagingHostRoot}")
+	@echo $(shell echo ${ENVIRONMENT} | grep prod > /dev/null && echo "- Production Landing Page: ${productionFrontendSubdomain}${productionHostRoot}")
+	@echo $(shell echo ${ENVIRONMENT} | grep stage > /dev/null && echo "- Staging Landing Page: ${stagingFrontendSubdomain}${stagingHostRoot}")
 
