@@ -25,7 +25,7 @@ function UnauthenticatedLinks() {
   return (
     <React.Fragment>
       <li>
-        <Link to="/auth/sign-up">Sign Up</Link>
+        <Link to="/auth/registration">Sign Up</Link>
       </li>
       <li>
         <Link to="/auth/login">Login</Link>

@@ -3,6 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 300px;
+  width: 300px;
 }
 .auth-form h1 {
   margin-top: 4px;
@@ -13,13 +15,14 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 12px;
+  text-transform: capitalize;
 }
 .auth-form input {
   width: 16em;
   margin-left: 8px;
 }
 
-.auth-form-error {
+.field-error {
   color: red;
-  margin-bottom: 12px;
+  margin: 0px 8px 12px;
 }

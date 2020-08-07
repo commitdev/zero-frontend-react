@@ -1,14 +1,8 @@
-import React, { useContext } from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Home from './pages/Home'
-import Login from './pages/Login'
-import SignUp from './pages/SignUp'
+import Auth from './pages/Auth'
 import Logout from './pages/Logout'
 import Dashboard from './pages/Dashboard'
 import UserSettings from './pages/UserSettings'
@@ -16,30 +10,7 @@ import PageNotFound from './pages/PageNotFound'
 
 import './App.css'
 import Navigation from './components/Navigation'
-import { AuthProvider, AuthContext } from './context/AuthContext'
-
-// A wrapper for <Route> that redirects to the login
-// screen if you're not yet authenticated.
-function PrivateRoute({ children, ...rest }) {
-  const { state } = useContext(AuthContext)
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        state.isAuthenticated ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: location },
-            }}
-          />
-        )
-      }
-    />
-  )
-}
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
   return (
@@ -53,20 +24,20 @@ function App() {
               <Home />
             </Route>
             <Route path="/auth/login">
-              <Login />
+              <Auth type="login" title="Login" key="login" />
             </Route>
-            <Route path="/auth/sign-up">
-              <SignUp />
+            <Route path="/auth/registration">
+              <Auth type="registration" title="Regsiter" key="registration" />
             </Route>
             <Route path="/auth/logout">
               <Logout />
             </Route>
-            <PrivateRoute path="/dashboard">
+            <Route path="/dashboard">
               <Dashboard />
-            </PrivateRoute>
-            <PrivateRoute path="/settings">
+            </Route>
+            <Route path="/settings">
               <UserSettings />
-            </PrivateRoute>
+            </Route>
             <Route path="*">
               <PageNotFound />
             </Route>

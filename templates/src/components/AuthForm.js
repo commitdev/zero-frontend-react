@@ -1,91 +1,73 @@
-import React, { useState } from 'react'
-import isEmail from 'validator/es/lib/isEmail'
+import React from 'react'
 
 import './AuthForm.css'
 
-const initialState = {
-  email: '',
-  password: '',
-  isSubmitting: false,
-  errorMessage: null,
+const translations = {
+  password: {
+    title: 'Password',
+    position: 2,
+  },
+  'traits.email': {
+    title: 'E-Mail',
+    position: 1,
+  },
+  identifier: {
+    title: 'ID',
+    position: 0,
+  },
+  to_verify: {
+    title: 'Your email address',
+    position: 0,
+  },
 }
 
-function AuthForm({ title, submitAction, submitActionLabel }) {
-  const [data, setData] = useState(initialState)
+const getPosition = (field) =>
+  field.name && field.name in translations
+    ? translations[field.name].position
+    : Infinity
 
-  function handleInputChange(event) {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value,
-    })
-  }
+const sortFormFields = (first, second) =>
+  getPosition(first) - getPosition(second)
 
-  function setErrorMessage(msg = 'Something went wrong') {
-    setData({
-      ...data,
-      isSubmitting: false,
-      errorMessage: msg,
-    })
-  }
-
-  function handleFormSubmit(event) {
-    event.preventDefault()
-
-    if (!isEmail(data.email)) {
-      setErrorMessage('Invalid email')
-      return
-    }
-
-    if (!data.password) {
-      setErrorMessage('Missing password')
-      return
-    }
-
-    setData({
-      ...data,
-      isSubmitting: true,
-      errorMessage: null,
-    })
-
-    submitAction(
-      { email: data.email, password: data.password },
-      setErrorMessage
+function Field({ name, type, required, value, errors = [] }) {
+  if (type === 'hidden') {
+    return (
+      <input
+        type={type}
+        value={value}
+        readOnly
+        name={name}
+        required={required}
+      />
     )
   }
 
+  const labelName = translations[name] ? translations[name].title : name
+  const error = errors.length ? errors[0] : undefined
   return (
-    <form onSubmit={handleFormSubmit} className="auth-form">
+    <React.Fragment>
+      <label htmlFor={name}>
+        {labelName}
+        <input type={type} defaultValue={value} name={name} id={name} />
+      </label>
+      {error && <p className="field-error">{error.message}</p>}
+    </React.Fragment>
+  )
+}
+
+function AuthForm({ title, config = {} }) {
+  const fields = config.fields || []
+
+  // TODO: figure out how to keep track of successful logins via AuthContext (required for Nav)
+  return (
+    <form method={config.method} action={config.action} className="auth-form">
       <h1>{title}</h1>
 
-      <label htmlFor="email">
-        Email
-        <input
-          type="text"
-          value={data.email}
-          onChange={handleInputChange}
-          disabled={data.isSubmitting}
-          name="email"
-          id="email"
-        />
-      </label>
+      {fields.sort(sortFormFields).map((fieldData) => (
+        <Field {...fieldData} key={fieldData.name} />
+      ))}
 
-      <label htmlFor="password">
-        Password
-        <input
-          type="password"
-          value={data.password}
-          onChange={handleInputChange}
-          disabled={data.isSubmitting}
-          name="password"
-          id="password"
-        />
-      </label>
-
-      {data.errorMessage && (
-        <span className="auth-form-error">{data.errorMessage}</span>
-      )}
-
-      <button disabled={data.isSubmitting}>{submitActionLabel}</button>
+      <button>Submit</button>
     </form>
   )
 }
