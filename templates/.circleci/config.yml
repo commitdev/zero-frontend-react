@@ -182,7 +182,7 @@ jobs:
       - run:
           name: Invalidate Cloudfront
           command: |
-            export DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(@, '<< parameters.bucket >>')]].Id | [0]" | tr -d '"')
+            export DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(?@=='<< parameters.bucket >>')]].Id | [0]" | tr -d '"')
             aws cloudfront create-invalidation --distribution-id ${DIST_ID} --paths "/*"
 
 workflows:
@@ -220,7 +220,17 @@ workflows:
             #   branches:
             #     only:  # only branches matching the below regex filters will run
             #       - /^master$/
+        
+        - wait_for_approval:
+            type: approval
+            requires:
+              - deploy_staging
 
+        - queue/block_workflow:
+            time: '30' # hold for 30 mins then abort
+            requires:
+              - wait_for_approval
+        
         - deploy:
             name: deploy_production
             requires:
