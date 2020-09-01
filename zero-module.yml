@@ -19,6 +19,11 @@ requiredCredentials:
   - github
 
 parameters:
+  - field: ci-provider
+    label: Select CI Provider
+    options:
+      - "GitHub-(GHA)"
+      - "CircleCI"
   - field: region
     label: Select AWS Region
     options:
