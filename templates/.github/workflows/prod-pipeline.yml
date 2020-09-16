@@ -1,0 +1,58 @@
+# .github/workflows/prod-pipeline.yml
+# This is a github action pipeline for production.
+name: Production Deployment
+on: 
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref (Optional)    
+        required: false
+# Jobs
+jobs:
+  build-prod:
+      runs-on: ubuntu-latest
+      env:
+        CI: true
+        build_env: production
+      steps:
+      # Checkout the code
+        - uses: actions/checkout@v2
+      # Run Tests
+        - name: Run Unit Tests
+          uses: actions/setup-node@v1
+          with: 
+            node-version: 12.x
+        - run: |
+            yarn
+            yarn test --watchAll=false
+      # Build Code
+        - name: Build Static Site
+          uses: actions/setup-node@v1
+          with: 
+            node-version: 12.x  
+        - run: |
+            yarn
+            yarn build
+            ls -al
+          env:
+            REACT_APP_CONFIG: ${{ env.build_env }}
+      # Upload build to github artifact
+        - name: Upload build artifact to Github
+          uses: actions/upload-artifact@v1
+          with:
+            name: build-artifact
+            path: build/
+  deploy-prod:
+    name: Deploy To Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository (Latest)
+        uses: actions/checkout@v2
+        if: github.event.inputs.git-ref == ''
+      - name: Clone Repository (Custom Ref)
+        uses: actions/checkout@v2
+        if: github.event.inputs.git-ref != ''
+        with:
+          ref: ${{ github.event.inputs.git-ref }}
+      # TODO: sync with production like prod-pipeline.yml
+ 
