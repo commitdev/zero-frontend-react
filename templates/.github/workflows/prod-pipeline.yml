@@ -43,8 +43,11 @@ jobs:
             name: build-artifact
             path: build/
   deploy-prod:
-    name: Deploy To Production
+name: Deploy To Production
     runs-on: ubuntu-latest
+    env:
+      bucket: "<% index .Params `productionFrontendSubdomain` %><% index .Params `productionHostRoot` %>"
+      region: "<% index .Params `region` %>"
     steps:
       # Clone repo
       - name: Clone Repository (Latest)
@@ -64,7 +67,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.region }}
       # Deploy to s3
-      - name: Copy files to the test website with the AWS CLI
+      - name: Sync with S3
         run: |
           cd stage-build-artifact
           aws s3 sync . s3://${{ env.bucket }}

@@ -41,12 +41,12 @@ jobs:
           path: build/
 # TODO: Deploy for stage
   deploy-stage:
-    name: Upload to Amazon S3
+   name: Upload to Amazon S3
     runs-on: ubuntu-latest
     needs: build-stage
     env:
-      region: us-west-2
-      bucket: <% bucket %> 
+      bucket: "<% index .Params `stagingFrontendSubdomain` %><% index .Params `stagingHostRoot` %>"
+      region: "<% index .Params `region` %>"
     steps:
       - name: Download artifact from build step
         uses: actions/download-artifact@v1
@@ -62,7 +62,7 @@ jobs:
           aws-region: ${{ env.region }}
       
       # Deploy to s3
-      - name: Copy files to the test website with the AWS CLI
+      - name: Sync with S3
         run: |
           cd stage-build-artifact
           aws s3 sync . s3://${{ env.bucket }}
@@ -72,5 +72,4 @@ jobs:
         run: |
           export DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?@=='${{ env.bucket }}']].Id | [0]" | tr -d '"')
           aws cloudfront create-invalidation --distribution-id ${DIST_ID} --paths "/*"
-# TODO: Approval workflow, Make comment on how to manual step to deploy to prod
-# Message saying the deploy to stage was successful and instructions on how to deploy to prod.
+#TODO: Message saying the deploy to stage was successful and instructions on how to deploy to prod
