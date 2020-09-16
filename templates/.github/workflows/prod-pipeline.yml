@@ -46,13 +46,31 @@ jobs:
     name: Deploy To Production
     runs-on: ubuntu-latest
     steps:
+      # Clone repo
       - name: Clone Repository (Latest)
         uses: actions/checkout@v2
         if: github.event.inputs.git-ref == ''
+      # Clone repo with custom ref
       - name: Clone Repository (Custom Ref)
         uses: actions/checkout@v2
         if: github.event.inputs.git-ref != ''
         with:
           ref: ${{ github.event.inputs.git-ref }}
-      # TODO: sync with production like prod-pipeline.yml
+       # Configure Aws account for S3 Sync
+      - name: Configure AWS credentials for S3 sync
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.region }}
+      # Deploy to s3
+      - name: Copy files to the test website with the AWS CLI
+        run: |
+          cd stage-build-artifact
+          aws s3 sync . s3://${{ env.bucket }}
+      # Invalidate Cloudfront
+      - name: Invalidate Cloudfront
+        run: |
+          export DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?@=='${{ env.bucket }}']].Id | [0]" | tr -d '"')
+          aws cloudfront create-invalidation --distribution-id ${DIST_ID} --paths "/*"
  
