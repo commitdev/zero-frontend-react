@@ -8,8 +8,8 @@ GITHUB_REPO := $(shell echo ${REPOSITORY} | cut -d "/" -f 3)
 
 run:
 	@echo "Set CIRCLECI environment variables\n"
-	export AWS_ACCESS_KEY_ID=$(shell aws secretsmanager get-secret-value --region ${region} --secret-id=ci-user-aws-keys${randomSeed} | jq -r '.SecretString'| jq -r .access_key_id)
-	export AWS_SECRET_ACCESS_KEY=$(shell aws secretsmanager get-secret-value --region ${region} --secret-id=ci-user-aws-keys${randomSeed} | jq -r '.SecretString'| jq -r .secret_key)
+	export AWS_ACCESS_KEY_ID=$(shell aws secretsmanager get-secret-value --region ${region} --secret-id=<% .Name %>-ci-user-shared-aws-keys${randomSeed} | jq -r '.SecretString'| jq -r .access_key_id)
+	export AWS_SECRET_ACCESS_KEY=$(shell aws secretsmanager get-secret-value --region ${region} --secret-id=<% .Name %>-ci-user-shared-aws-keys${randomSeed} | jq -r '.SecretString'| jq -r .secret_key)
 	curl -X POST --header "Content-Type: application/json" -d '{"name":"CIRCLECI_API_KEY", "value":"${CIRCLECI_API_KEY}"}' https://circleci.com/api/v1.1/project/github/${GITHUB_ORG}/${GITHUB_REPO}/envvar?circle-token=${CIRCLECI_API_KEY}
 	curl -X POST --header "Content-Type: application/json" -d '{"name":"AWS_ACCESS_KEY_ID", "value":"${AWS_ACCESS_KEY_ID}"}' https://circleci.com/api/v1.1/project/github/${GITHUB_ORG}/${GITHUB_REPO}/envvar?circle-token=${CIRCLECI_API_KEY}
 	curl -X POST --header "Content-Type: application/json" -d '{"name":"AWS_SECRET_ACCESS_KEY", "value":"${AWS_SECRET_ACCESS_KEY}"}' https://circleci.com/api/v1.1/project/github/${GITHUB_ORG}/${GITHUB_REPO}/envvar?circle-token=${CIRCLECI_API_KEY}
