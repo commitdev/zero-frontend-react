@@ -2,7 +2,7 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.15
-  queue: eddiewebb/queue@1.3.0
+  queue: eddiewebb/queue@1.5.0
 
 variables:
   - &workspace /home/circleci/project
