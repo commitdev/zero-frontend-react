@@ -1,0 +1,66 @@
+.auth-form {
+  min-width: 300px;
+}
+
+.auth-form label {
+  display: block;
+  width: 100%;
+  text-transform: capitalize;
+}
+
+.auth-form a {
+  color: inherit;
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.auth-form label input,
+.auth-form button {
+  background: rgba(0, 0, 0, 0.2);
+  border: 0px;
+  box-sizing: border-box;
+  font-size: 1.2em;
+  margin-bottom: 1.2em;
+  padding: 8px;
+  width: 100%;
+}
+
+.auth-form button {
+  border: 3px transparent solid;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.auth-form button.submit-button:hover {
+  border: 3px solid rgba(0, 0, 0, 0.2);
+}
+
+.field-error {
+  color: red;
+  margin: 0px 8px 12px;
+}
+
+.oidc {
+  color: white;
+  text-transform: capitalize;
+}
+
+.oidc:hover {
+  opacity: 0.5;
+}
+
+.oidc.google {
+  background-color: #4B7EFF;
+}
+
+.oidc.github {
+  background-color: #562A7B;
+}
+
+.oidc:before {
+  content: 'Sign in with ';
+  text-transform: none;
+}

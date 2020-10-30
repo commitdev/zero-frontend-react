@@ -1,27 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+
 .App {
-  text-align: center;
-  background-color: white;
-  font-family: 'Montserrat';
+  font-family: 'Montserrat', sans-serif;
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 
-.App-logo {
-  width: calc(1/8 * 100vw)
-}
-
-.App-header h1 {
-  font-size: calc(1/12 * 100vw);
-  margin: 0;
-  margin-top: calc(-1/25 * 100vh);
-}
-
-.App-header {
-  min-height: 100vh;
+.content-container {
   display: flex;
+  justify-content: space-around;
+  margin-top: calc(1 / 20 * 100vh);
+  width: 100%;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
 }

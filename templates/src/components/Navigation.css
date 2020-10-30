@@ -1,0 +1,37 @@
+.app-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #000242;
+  color: #ffffff;
+  height: 50px;
+  padding: 10px 20px;
+}
+
+.app-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.app-nav-links li {
+  margin: 0px 16px;
+}
+
+.app-nav-links li:last-of-type {
+  margin-right: 0px;
+}
+
+.app-nav a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.app-nav-logo {
+  height: 25px;
+}
+
+.app-nav-logo img {
+  height: 25px;
+}

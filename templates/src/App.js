@@ -1,61 +1,65 @@
-import React, { useEffect, useState } from "react";
-import logo from "./commit-logo.png";
-import "./App.css";
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import "./components/Info";
-import InfoPanel from "./components/Info";
+import Home from './pages/Home'
+import Auth from './pages/Auth'
+import Logout from './pages/Logout'
+import Dashboard from './pages/Dashboard'
+import PageNotFound from './pages/PageNotFound'
 
-// Set config based on the environment variable the build was run under.
-let config = {};
-if (process.env.REACT_APP_CONFIG === "production") {
-  config = require("./config/production.json");
-} else if (process.env.REACT_APP_CONFIG === "staging") {
-  config = require("./config/staging.json");
-} else {
-  config = require("./config/development.json");
-}
+import './App.css'
+import Navigation from './components/Navigation'
+import { AuthProvider } from './context/AuthContext'
 
-function App() {
-  const [data, setData] = useState({
-    info: {},
-    error: null,
-  });
-
-  const [status, setStatus] = useState({
-    code: "Checking...",
-  })
-
-  useEffect(() => {
-    fetch(`${config.backendURL}/status/about`)
-      .then(result => {
-        setStatus({
-          code: result.status,
-        })
-        return result.json()
-      })
-      .then(data => {
-        setData({
-          info: data,
-          error: null
-        })
-      })
-      .catch(error => {
-        setData({
-          info: {},
-          error: error
-        })
-      });
-  }, []);
-
+function AuthRoutes () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>zero</h1>
-        <InfoPanel data={data} status={status} config={config} />
-      </header>
-    </div>
-  );
+    <Switch>
+      <Route path="/auth/login">
+        <Auth page="login" title="Login" key="login" />
+      </Route>
+      <Route path="/auth/registration">
+        <Auth page="registration" title="Regsiter" key="registration" />
+      </Route>
+      <Route path="/auth/profile">
+        <Auth page="settings" title="profile" key="profile" />
+      </Route>
+      <Route path="/auth/recovery">
+        <Auth page="recovery" title="Recovery" key="recovery" />
+      </Route>
+      <Route path="/auth/settings">
+        <Auth page="settings" title="Settings" key="settings" />
+      </Route>
+      <Route path="/auth/logout">
+        <Logout />
+      </Route>
+    </Switch>
+  )
+}
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <div className="App">
+          <Navigation />
+
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="/auth/*">
+              <AuthRoutes/>
+            </Route>
+            <Route path="*">
+              <PageNotFound />
+            </Route>
+          </Switch>
+        </div>
+      </AuthProvider>
+    </Router>
+  )
 }
 
-export default App;
+export default App

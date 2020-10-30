@@ -1,20 +1,16 @@
-.info h2 {
-    font-size: medium;
-    font-weight: 500;
-    text-align: left;
-    margin-bottom: 0;
-    color: slategray;
+.info-container {
+  font-size: large;
+  text-align: left;
 }
 
-.info-panel {
-    font-size: large;
-    text-align: left;
-    min-width: 300px;
-    padding: 12px 25px 12px 25px;
-    border: slategray 0.5px solid;
-    border-radius: 9px;
+.info-container h2 {
+  font-size: medium;
+  font-weight: 400;
+  text-align: left;
+  margin-bottom: 0;
+  color: slategray;
 }
 
 .error {
-    color: crimson
+  color: crimson;
 }
