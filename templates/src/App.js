@@ -2,13 +2,16 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Home from './pages/Home'
+<%if eq (index .Params `userAuth`) "yes" %> 
 import Auth from './pages/Auth'
-import Logout from './pages/Logout'
+import Logout from './pages/Logout'<% end %>
+
 import Dashboard from './pages/Dashboard'
 import PageNotFound from './pages/PageNotFound'
 
 import './App.css'
 import Navigation from './components/Navigation'
+<%if eq (index .Params `userAuth`) "yes" %> 
 import { AuthProvider } from './context/AuthContext'
 
 function AuthRoutes () {
@@ -35,9 +38,11 @@ function AuthRoutes () {
     </Switch>
   )
 }
+<% end %>
 function App() {
   return (
     <Router>
+<%if eq (index .Params `userAuth`) "yes" %> 
       <AuthProvider>
         <div className="App">
           <Navigation />
@@ -58,6 +63,22 @@ function App() {
           </Switch>
         </div>
       </AuthProvider>
+<% else if eq (index .Params `userAuth`) "no" %>
+      <div className="App">
+        <Navigation />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
+          <Route path="*">
+            <PageNotFound />
+          </Route>
+        </Switch>
+      </div>
+<% end %>
     </Router>
   )
 }

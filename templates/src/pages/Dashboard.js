@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 
-import { AuthContext } from '../context/AuthContext'
 import Card from '../components/Card'
-import AuthCheck from '../components/AuthCheck'
+<%if eq (index .Params `userAuth`) "yes" %> import { AuthContext } from '../context/AuthContext'
+import AuthCheck from '../components/AuthCheck'<% end %>
+
 
 // This is an example of an authenticated only page
 // to showcase how you would implement a page that loads data from backend
@@ -11,11 +12,12 @@ import AuthCheck from '../components/AuthCheck'
 // then data will inject into state to show in dashboard
 
 // In real scenario this would be fetching data from backend
-const fetchDashboard = async(authState) => new Promise((resolve) => {
-  const fakeFetchData = () => resolve(authState);
+const fetchDashboard = async(data) => new Promise((resolve) => {
+  const fakeFetchData = () => resolve(data);
   setTimeout(fakeFetchData, 500);
 })
 
+<%if eq (index .Params `userAuth`) "yes" %> 
 function Dashboard() {
   const { state: authState } = useContext(AuthContext)
   const [state, setState] = useState({
@@ -54,5 +56,32 @@ function Dashboard() {
     </AuthCheck>
   )
 }
+<% else if eq (index .Params `userAuth`) "no" %>
+function Dashboard () {
+  const [state, setState] = useState({
+    isLoading: true,
+    data: {},
+  })
 
+  useEffect(()=> {
+    fetchDashboard({lorem: "Ipsum"}).then(data=> {
+
+      setState({
+        ...state,
+        isLoading: false,
+        data,
+      })
+    });
+  });
+  return <div className="content-container">
+    <Card header="Dashboard">
+      {
+        state.isLoading ?
+          <div>Fetching data...</div> :
+          <pre>{ JSON.stringify(state.data, null , 2) }</pre>
+      }
+    </Card>
+  </div>
+}
+<% end %>
 export default Dashboard
