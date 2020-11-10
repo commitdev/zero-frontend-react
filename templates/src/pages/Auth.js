@@ -71,7 +71,9 @@ function Auth({ page }) {
     const requestId = queryParams.get('flow')
 
     if (requestId === null) {
-      window.location.href = generateFormRequestUrl(formData.page)
+      generateFormRequestUrl(formData.page).then(url => {
+        window.location.href = url
+      });
     } else {
       fetchRequestData(page, requestId).then(resp => {
         if (!resp) {
