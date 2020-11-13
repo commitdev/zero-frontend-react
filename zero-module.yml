@@ -68,3 +68,23 @@ parameters:
   - field: randomSeed
     label: Random seed that will be shared between projects to come up with deterministic resource names
     execute: uuidgen | head -c 8
+  - field: userAuth
+    label: Enable user management using Kratos and authentication using the Oathkeeper access proxy?
+    default: yes
+    options:
+      - "yes"
+      - "no"
+
+conditions:
+  - action: ignoreFile
+    matchField: userAuth
+    whenValue: "no"
+    data:
+    - src/components/AuthCheck.js
+    - src/components/AuthForm.js
+    - src/components/AuthForm.css
+    - src/pages/Auth.js
+    - src/pages/Auth.css
+    - src/pages/Logout.js
+    - src/api/
+    - src/context/

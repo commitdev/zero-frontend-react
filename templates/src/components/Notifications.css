@@ -1,0 +1,27 @@
+.notification {
+  background: white;
+  border: 1px solid #ccc;
+  font-size: 0.8em;
+  height: auto;
+  left: calc(50vw - 250px);
+  margin-top: 1rem;
+  padding: 2%;
+  position: absolute;
+  top: 50px;
+  width: 500px;
+}
+
+.notification .code {
+  bottom: 2px;
+  font-size: 0.8em;
+  position: absolute;
+  right: 2px;
+}
+
+.notification.error {
+  color: red;
+}
+
+.notification.info {
+  color: navy;
+}

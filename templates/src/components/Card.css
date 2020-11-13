@@ -1,0 +1,16 @@
+.card {
+  padding: 4%;
+  background: #eee;
+  border: none;
+  border-radius: 0px;
+  min-width: 350px;
+}
+
+.card::before {
+  content: attr(header);
+  position: absolute;
+  margin-top: calc(-4% - 1.5em);
+  margin-left: calc(-4%);
+  text-indent: 0.2em;
+  font-weight: 600;
+}
