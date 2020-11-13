@@ -5,6 +5,10 @@
   justify-content: center;
 }
 
+.Home .card {
+  width: 400px;
+}
+
 .App-logo {
   width: calc(1 / 8 * 100vw);
 }

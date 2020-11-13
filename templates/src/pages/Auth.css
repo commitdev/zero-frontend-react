@@ -29,3 +29,12 @@
 .separator::after {
   margin-left: .25em;
 }
+
+.auth-container .card{
+  padding: 4%;
+}
+.auth-container .card::before {
+  /* the % offsets the padding on .card */
+  margin-top: calc(-4% - 1.5em);
+  margin-left: calc(-4%);
+}

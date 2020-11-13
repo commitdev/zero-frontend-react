@@ -21,7 +21,7 @@ const adminApi = new AdminApiAxiosParamCreator({basePath : authAdminURL });
  * maps and calls flows[Login/Registration/Recovery/Settings] to kratos sdk fn names
  */
 const getBrowserFlowParams = async (flow) =>  publicApi[`initializeSelfService${flow}ViaBrowserFlow`]();
-const getRequestFlowData = async (flow, id) =>  publicApi[`getSelfService${flow}Flow`](id);
+const getRequestFlowData = async (flow, id) =>  adminApi[`getSelfService${flow}Flow`](id);
 
 /**
  * generate<Logout/FormRequest/RequestData/Session>URL uses SDK to generate endpoint for http client
@@ -34,7 +34,7 @@ const generateLogoutUrl = async () => {
 const generateFormRequestUrl = async (type) => {
   let { url } = await getBrowserFlowParams(capitalize(type));
   // Workaround for bug in SDK specs: https://github.com/ory/sdk/issues/43
-  if (type == "settings") {
+  if (type === "settings") {
     url = url.replace(/\/flows$/, '');
   }
   return authPublicURL + url;
