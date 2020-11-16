@@ -20,7 +20,7 @@ function Home() {
   });
 
   const fetchPrivateData = async(data) =>  {
-    const uri = `${config.backendURL}/api/auth-data`
+    const uri = `${config.backendURL}/api/auth/userInfo`
     const resp = await fetch(uri,{credentials : "include"});
     return {
       data: await resp.json(),
