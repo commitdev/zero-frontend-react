@@ -1,6 +1,4 @@
-# .github/workflows/prod-pipeline.yml
-# This is a github action pipeline for production.
-name: ci pipeline
+name: CI Pipeline
 on:
   push:
     branches: [master]
@@ -56,7 +54,18 @@ jobs:
           with:
             name: build-artifact-${{ matrix.env }}
             path: build/
-        ## The outputs set provide data and set matrix for the deploy steps
+        ## This sets `step.outputs` is picked up by `jobs.outputs`, then when the step deploy reads `jobs.outputs`
+        ## this provides data and set matrix for the deploy steps. This allows us to specify the data once
+        ## and have the subsequence step can pass along the information created during this step.
+        # the Deploy step will have a strategy matrix as follows:
+        # {
+        #   "include": [{
+        #     "env": "stage",
+        #     "buildName": "build-artifact-stage",
+        #     "bucket": "app.mydomain.com"
+        #   }]
+        # }
+        ##
         - name: needs-approval
           id: needs-approval
           if: ${{ matrix.env == 'production' }}
@@ -90,7 +99,7 @@ jobs:
       - name: Download build artifact from Github
         uses: actions/download-artifact@v1
         with:
-          name: build-artifact-${{ matrix.env }}
+          name: ${{ matrix.buildName }}
           path: build/
       - name: Sync with S3
         shell: bash
@@ -123,7 +132,7 @@ jobs:
       - name: Download build artifact from Github
         uses: actions/download-artifact@v1
         with:
-          name: build-artifact-${{ matrix.env }}
+          name: ${{ matrix.buildName }}
           path: build/
       - name: Sync with S3
         run: |
