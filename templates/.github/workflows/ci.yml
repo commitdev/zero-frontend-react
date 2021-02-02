@@ -14,9 +14,7 @@ jobs:
       CI: true
       build_env: production
     steps:
-    # Checkout the code
     - uses: actions/checkout@v2
-    # Run Tests
     - name: Run Unit Tests
       uses: actions/setup-node@v1
       with:
@@ -43,9 +41,7 @@ jobs:
         needs-approval: "${{ steps.needs-approval.outputs.needs-approval }}"
         approved-deploy: "${{ steps.approved-deploy.outputs.approved-deploy }}"
       steps:
-      # Checkout the code
         - uses: actions/checkout@v2
-      # Build Code
         - name: Build Static Site
           uses: actions/setup-node@v1
           with:
@@ -55,7 +51,6 @@ jobs:
             yarn build
           env:
             REACT_APP_CONFIG: ${{ matrix.env }}
-      # Upload build to github artifact
         - name: Upload build artifact to Github
           uses: actions/upload-artifact@v1
           with:
@@ -75,35 +70,33 @@ jobs:
       runs-on: ubuntu-latest
       needs: build
       strategy:
+        # with `needs` declared, the job will have access to the output of the needed step
+        # and in the needed step(`build`) we have the output of what should be instantly deployed
         matrix: ${{ fromJSON(needs.build.outputs.approved-deploy) }}
       env:
-        region: "us-east-2"
+        region: <% index .Params `region` %>
       steps:
       # Once github action supports nested composite actions (anything `uses` is a composite action)
       # Therefore we cannot reuse the code as a separate composite action until it supports it,
       # current the deploy logic is in this file twice because of it
       ## https://github.com/actions/runner/issues/862
       - uses: actions/checkout@v2
-      # Configure Aws account for S3 Sync
       - name: Configure AWS credentials for S3 sync
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-2
-      # Upload build to github artifact
+          aws-region: <% index .Params `region` %>
       - name: Download build artifact from Github
         uses: actions/download-artifact@v1
         with:
           name: build-artifact-${{ matrix.env }}
           path: build/
-      # Deploy to s3
       - name: Sync with S3
         shell: bash
         run: |
           cd build
           aws s3 sync . s3://${{ matrix.bucket }}
-      # Invalidate Cloudfront
       - name: Invalidate Cloudfront
         shell: bash
         run: |
@@ -114,31 +107,28 @@ jobs:
     runs-on: ubuntu-latest
     name: production-deploy
     env:
-      region: "us-east-2"
+      region: <% index .Params `region` %>
+    # with `needs` declared, the job will have access to the output of the needed step
+    # and in the needed step(`build`) we have the output of what should be instantly deployed
     strategy:
       matrix: ${{ fromJSON(needs.build.outputs.needs-approval) }}
     steps:
-    # Checkout the code
       - uses: actions/checkout@v2
-      # Configure Aws account for S3 Sync
       - name: Configure AWS credentials for S3 sync
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.region }}
-      # Upload build to github artifact
       - name: Download build artifact from Github
         uses: actions/download-artifact@v1
         with:
           name: build-artifact-${{ matrix.env }}
           path: build/
-      # Deploy to s3
       - name: Sync with S3
         run: |
           cd build
           aws s3 sync . s3://${{ matrix.bucket }}
-      # Invalidate Cloudfront
       - name: Invalidate Cloudfront
         run: |
           export DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?@=='${{ matrix.bucket }}']].Id | [0]" | tr -d '"')
