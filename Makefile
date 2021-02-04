@@ -13,6 +13,9 @@ PROJECT_NAME := ${PROJECT_NAME}
 .EXPORT_ALL_VARIABLES:
 
 run: ci_setup
+	@echo "\nDone"
+
+ci_setup:
 # Conditionally setup GitHub Action OR CircleCI's environment for CI
 ifeq ($(CIVendor), Github actions)
 ci_setup: github_actions_setup
@@ -20,9 +23,7 @@ endif
 ifeq ($(CIVendor), CircleCI)
 ci_setup: circle_ci_setup
 endif
-	@echo "\nDone"
 
-ci_setup:
 
 circle_ci_setup:
 	@echo "Set CIRCLECI environment variables\n"
