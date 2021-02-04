@@ -21,4 +21,22 @@ pushd $PROJECT_DIR && \
 gh secret set AWS_ACCESS_KEY_ID --repos="$GITHUB_REPO" --body="$AWS_ACCESS_KEY_ID" && \
 gh secret set AWS_SECRET_ACCESS_KEY --repos="$GITHUB_REPO" --body="$AWS_SECRET_ACCESS_KEY" && \
 popd
+
+## Branch Protect for PRs
+## By default we setup Pull-request checks of [lint, unit-test] in `.github/workflows/pull-request.yml`
+## And we will enforce both the checks pass before PR can be merged into default branch
+DEFAULT_BRANCH=master
+curl -XPUT "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/branches/$DEFAULT_BRANCH/protection" \
+--header "Authorization: token $GITHUB_ACCESS_TOKEN" \
+--header 'Content-Type: application/json' \
+--data '{
+	"required_status_checks": {
+		"strict": false,
+		"contexts": ["lint","unit-test"]
+	},
+	"enforce_admins": false,
+	"required_pull_request_reviews": null,
+	"restrictions": null
+}'
+
 echo "Github actions environment variables setup successfully."

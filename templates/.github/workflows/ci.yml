@@ -105,8 +105,18 @@ jobs:
         run: |
           export DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?@=='${{ matrix.bucket }}']].Id | [0]" | tr -d '"')
           aws cloudfront create-invalidation --distribution-id ${DIST_ID} --paths "/*"
+  integration-test:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    name: integration-test
+    steps:
+    ## Example of smoke test against staging env before deploying to production
+    ## To be enhanced to more sophisicated checks
+    - run: echo "TEST_RESPONSE_COD=$(curl -o /dev/null -s -w \"%{http_code}\" https://<% index .Params `stagingFrontendSubdomain` %><% index .Params `stagingHostRoot` %>)" >> $GITHUB_ENV
+    - if: ${{env.TEST_RESPONSE_COD != '"200"'}}
+      run: exit 1
   production-deploy:
-    needs: [build, deploy]
+    needs: [build, integration-test]
     runs-on: ubuntu-latest
     name: production-deploy
     env:
