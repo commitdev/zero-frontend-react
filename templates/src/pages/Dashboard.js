@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { <%if eq (index .Params `userAuth`) "yes" %>useContext, <% end %>useEffect, useState } from 'react'
 
 import Card from '../components/Card'
 <%if eq (index .Params `userAuth`) "yes" %> import { AuthContext } from '../context/AuthContext'
-import AuthCheck from '../components/AuthCheck'<% end %>
-
+import AuthCheck from '../components/AuthCheck'
+<% end %>
 
 // This is an example of an authenticated only page
 // to showcase how you would implement a page that loads data from backend
@@ -17,8 +17,7 @@ const fetchDashboard = async(data) => new Promise((resolve) => {
   setTimeout(fakeFetchData, 500);
 })
 
-<%if eq (index .Params `userAuth`) "yes" %> 
-function Dashboard() {
+<%if eq (index .Params `userAuth`) "yes" %>function Dashboard() {
   const { state: authState } = useContext(AuthContext)
   const [state, setState] = useState({
     isLoading: true,
@@ -56,8 +55,7 @@ function Dashboard() {
     </AuthCheck>
   )
 }
-<% else if eq (index .Params `userAuth`) "no" %>
-function Dashboard () {
+<% else if eq (index .Params `userAuth`) "no" %>function Dashboard () {
   const [state, setState] = useState({
     isLoading: true,
     data: {},
