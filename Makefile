@@ -17,10 +17,10 @@ run: ci_setup
 
 ci_setup:
 # Conditionally setup GitHub Action OR CircleCI's environment for CI
-ifeq ($(CIVendor), Github actions)
+ifeq ($(CIVendor), github-actions)
 ci_setup: github_actions_setup
 endif
-ifeq ($(CIVendor), CircleCI)
+ifeq ($(CIVendor), circleci)
 ci_setup: circle_ci_setup
 endif
 

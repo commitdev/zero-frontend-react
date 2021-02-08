@@ -12,7 +12,7 @@ ___
 
 Your application is deployed to an AWS S3 bucket through CircleCi.
 
-<%if eq (index .Params `CIVendor`) "CircleCI" %>## Circle CI
+<%if eq (index .Params `CIVendor`) "circleci" %>## Circle CI
 
 Your repository comes with a end-to-end CI/CD pipeline, which includes the following steps:
 
@@ -29,7 +29,7 @@ The *Deploy* step does a:
 - Cloudfront Invalidation
 
 To learn more your pipeline checkout your [CircleCi config file](.circleci/config.yml)
-<% else if eq (index .Params `CIVendor`) "Github actions" %>## Github actions
+<% else if eq (index .Params `CIVendor`) "github-actions" %>## Github actions
 Your repository comes with a end-to-end CI/CD pipeline, which includes the following steps:
 1. Checkout
 2. Unit Tests
