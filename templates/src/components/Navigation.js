@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React<%if eq (index .Params `userAuth`) "yes" %>, { useContext }<% end %> from 'react'
 import { Link } from 'react-router-dom'
 <%if eq (index .Params `userAuth`) "yes" %> import { AuthContext } from '../context/AuthContext'  <% end %>
 import logo from '../commit-logo.png'
