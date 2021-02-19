@@ -12,7 +12,7 @@ ___
 
 Your application is deployed to an AWS S3 bucket through CircleCi.
 
-## Circle CI
+<%if eq (index .Params `CIVendor`) "circleci" %>## Circle CI
 
 Your repository comes with a end-to-end CI/CD pipeline, which includes the following steps:
 
@@ -29,6 +29,27 @@ The *Deploy* step does a:
 - Cloudfront Invalidation
 
 To learn more your pipeline checkout your [CircleCi config file](.circleci/config.yml)
+<% else if eq (index .Params `CIVendor`) "github-actions" %>## Github actions
+Your repository comes with a end-to-end CI/CD pipeline, which includes the following steps:
+1. Checkout
+2. Unit Tests
+3. Build frontend (stage / prod)
+4. Deploy Staging
+5. Integration tests
+6. Deploy Production
+
+**Note**: you can add a approval step using Github Environments(Available for Public repos/Github pro), you can configure an environment in the Settings tab then simply add the follow to your ci manifest (`./github/workflows/ci.yml`)
+```yml
+deploy-production: # or any step you would like to require Explicit approval
+  enviroments:
+    name: <env-name>
+```
+### Branch Protection
+Your repository comes with a protected branch `master` and you can edit Branch protection in **Branches** tab of Github settings. This ensures code passes tests before getting merged into your default branch.
+By default it requires `[lint, unit-test]` to be passing to allow Pull requests to merge.
+
+<% end %>
+
 ___
 
 

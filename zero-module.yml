@@ -74,6 +74,12 @@ parameters:
     options:
       - "yes"
       - "no"
+  - field: CIVendor
+    label: Using either circleCI or github Actions to build / test your repository
+    default: "circleci"
+    options:
+      - "circleci"
+      - "github-actions"
 
 conditions:
   - action: ignoreFile
@@ -88,3 +94,13 @@ conditions:
     - src/pages/Logout.js
     - src/api/
     - src/context/
+  - action: ignoreFile
+    matchField: CIVendor
+    whenValue: "circleci"
+    data:
+    - .github/
+  - action: ignoreFile
+    matchField: CIVendor
+    whenValue: "github-actions"
+    data:
+    - .circleci/
