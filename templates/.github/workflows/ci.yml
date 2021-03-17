@@ -25,7 +25,7 @@ jobs:
       strategy:
         matrix:
           include:
-          - env: stage
+          - env: staging
             bucket: <% index .Params `stagingFrontendSubdomain` %><% index .Params `stagingHostRoot` %>
           - env: production
             bucket: <% index .Params `productionFrontendSubdomain` %><% index .Params `productionHostRoot` %>
@@ -66,7 +66,7 @@ jobs:
           run: echo "::set-output name=needs-approval::{\"include\":[{\"env\":\"${{ matrix.env }}\",\"buildName\":\"build-artifact-${{ matrix.env }}\",\"bucket\":\"${{ matrix.bucket }}\"}]}"
         - name: approved-deploy
           id: approved-deploy
-          if: ${{ matrix.env == 'stage' }}
+          if: ${{ matrix.env == 'staging' }}
           run: echo "::set-output name=approved-deploy::{\"include\":[{\"env\":\"${{ matrix.env }}\",\"buildName\":\"build-artifact-${{ matrix.env }}\",\"bucket\":\"${{ matrix.bucket }}\"}]}"
   deploy:
       name: Deploy
