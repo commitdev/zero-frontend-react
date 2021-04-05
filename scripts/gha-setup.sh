@@ -39,4 +39,12 @@ curl -XPUT "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/branches/$DEFA
 	"restrictions": null
 }'
 
+## Rerun github actions workflow, since the first time github action is ran there are no AWS credentials
+## so it will always fail, begining of this script we inject the AWS credentials, therefore now we can rerun the workflow
+MOST_RECENT_RUN_ID=$(curl -XGET --url "https://api.github.com/repos/${GITHUB_ORG}/${GITHUB_REPO}/actions/runs" \
+--header "Authorization: token $GITHUB_ACCESS_TOKEN" --header 'Content-Type: application/json' | jq -r ".workflow_runs[0].id")
+## Triggering the rerun
+curl -XPOST --url "https://api.github.com/repos/${GITHUB_ORG}/${GITHUB_REPO}/actions/runs/${MOST_RECENT_RUN_ID}/rerun" \
+--header "Authorization: token $GITHUB_ACCESS_TOKEN" --header 'Content-Type: application/json'
+
 echo "Github actions environment variables setup successfully."
