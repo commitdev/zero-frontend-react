@@ -36,7 +36,7 @@ circle_ci_setup:
 	curl -X POST https://circleci.com/api/v1.1/project/github/${GITHUB_ORG}/${GITHUB_REPO}/follow?circle-token=${CIRCLECI_API_KEY}
 
 github_actions_setup:
-	sh scripts/gha-setup.sh
+	sh scripts/gha-setup.sh setup
 
 summary:
 	@echo "zero-deployable-react-frontend:"
