@@ -18,9 +18,9 @@ jobs:
         yarn
         yarn test --watchAll=false
     - if: env.AWS_ACCESS_KEY_ID == null
-          run: |
-            echo "AWS Credentials not found, This is expected for the first run as the repo is provisioned then secrets are injected at a later step."
-            exit 1
+      run: |
+        echo "AWS Credentials not found, This is expected for the first run as the repo is provisioned then secrets are injected at a later step."
+        exit 1
   build:
       needs: unit-test
       runs-on: ubuntu-latest

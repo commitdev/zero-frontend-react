@@ -1,0 +1,47 @@
+.billing-container .card {
+  min-width: auto;
+  max-width: 80%;
+}
+
+.products {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.productInfo, .billing-container button {
+  background: #f3f3ff;
+  border: 1px #ccc solid;
+  cursor: pointer;
+  padding: 3%;
+}
+
+.productName {
+  font-weight: bold;
+}
+
+.productPrice {
+  margin-top: 1rem;
+}
+
+.productInfo {
+  min-width: 150px;
+  max-width: 250px;
+  margin: 1%;
+}
+
+.productInfo div:not(:last-child) {
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.7rem;
+  border-bottom: 1px solid grey;
+}
+
+.billing-container button{
+  font-weight: bold;
+  padding: 20px;
+  width: 25%;
+  margin: 30px auto 0;
+}

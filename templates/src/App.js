@@ -5,7 +5,9 @@ import Home from './pages/Home'
 <%if eq (index .Params `userAuth`) "yes" %> 
 import Auth from './pages/Auth'
 import Logout from './pages/Logout'<% end %>
-
+<%if eq (index .Params `billingEnabled`) "yes" %> 
+import BillingRoutes from './pages/Billing/routes'
+<% end %>
 import Dashboard from './pages/Dashboard'
 import PageNotFound from './pages/PageNotFound'
 
@@ -57,7 +59,10 @@ function App() {
             <Route path="/auth/*">
               <AuthRoutes/>
             </Route>
-            <Route path="*">
+            <%if eq (index .Params `billingEnabled`) "yes" %><Route exact path="/billing/*">
+                <BillingRoutes />
+            </Route>
+            <% end %><Route path="*">
               <PageNotFound />
             </Route>
           </Switch>
@@ -73,7 +78,10 @@ function App() {
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="*">
+          <%if eq (index .Params `billingEnabled`) "yes" %><Route exact path="/billing/*">
+            <BillingRoutes />
+          </Route>
+          <% end %><Route path="*">
             <PageNotFound />
           </Route>
         </Switch>
