@@ -171,3 +171,8 @@ conditions:
     whenValue: "github-actions"
     data:
     - .circleci/
+  - action: ignoreFile
+    matchField: CIVendor
+    whenValue: "github-actions"
+    data:
+    - src/pages/Billing
