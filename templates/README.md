@@ -70,7 +70,7 @@ serve -s build
 A subscription and checkout example using [Stripe](https://stripe.com), coupled with the backend repository to provide an end-to-end checkout example for you to customize. We also setup a webhook and an endpoint in the backend to receive webhook when events occur.
 
 ### Setup
-We have setup for you in the stripe platform
+The following example content has been set up in Stripe:
 - 1 product
 - 3 prices(subscriptions) [annual, monthly, daily]
 - 1 webhook [`charge.failed`, `charge.succeeded`, `customer.created`, `subscription_schedule.created`]
