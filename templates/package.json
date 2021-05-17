@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@oryd/kratos-client": "^0.5.3-alpha.1",
-    "@testing-library/jest-dom": "^4.2.4",
+    <%if eq (index .Params `userAuth`) "yes" %>"@oryd/kratos-client": "^0.5.3-alpha.1",
+    <% end %><%if eq (index .Params `billingEnabled`) "yes" %>"@stripe/react-stripe-js": "^1.4.0",
+    "@stripe/stripe-js": "^1.13.2",
+    <% end %>"@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.1",

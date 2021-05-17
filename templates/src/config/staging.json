@@ -1,5 +1,6 @@
 {
     "appName": "<% .Name %>",
     "environment": "staging",
-    "backendURL": "https://<% index .Params `stagingBackendSubdomain` %><% index .Params `stagingHostRoot` %>"
+    "backendURL": "https://<% index .Params `stagingBackendSubdomain` %><% index .Params `stagingHostRoot` %>"<%if eq (index .Params `billingEnabled`) "yes" %>,
+    "stripePublishableKey": "<% index .Params `stagingStripePublicApiKey` %>"<% end %>
 }

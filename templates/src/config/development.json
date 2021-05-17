@@ -1,5 +1,6 @@
 {
     "appName": "<% .Name %>",
     "environment": "development",
-    "backendURL": "http://localhost:8080"
+    "backendURL": "http://localhost:8080"<%if eq (index .Params `billingEnabled`) "yes" %>,
+    "stripePublishableKey": "<% index .Params `stagingStripePublicApiKey` %>"<% end %>
 }

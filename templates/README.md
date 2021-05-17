@@ -64,3 +64,21 @@ REACT_APP_CONFIG=staging yarn build
 
 serve -s build
 ```
+
+<%if eq (index .Params `billingEnabled`) "yes" %>
+## Billing example
+A subscription and checkout example using [Stripe](https://stripe.com), coupled with the backend repository to provide an end-to-end checkout example for you to customize. We also setup a webhook and an endpoint in the backend to receive webhook when events occur.
+
+### Setup
+The following example content has been set up in Stripe:
+- 1 product
+- 3 prices(subscriptions) [annual, monthly, daily]
+- 1 webhook [`charge.failed`, `charge.succeeded`, `customer.created`, `subscription_schedule.created`]
+See link for available webhooks: https://stripe.com/docs/api/webhook_endpoints/create?lang=curl#create_webhook_endpoint-enabled_events
+
+this is setup using the script [scripts/stripe-example-setup.sh](scripts/stripe-example-setup.sh)
+
+### Deployment
+The deployment requires the publishable key in the build, per environment you will have to provide `stripePublishableKey` in `config/<env>.json` [`production`/`staging`/`development`], then when CI builds it will create a bundle with the Stripe publishable API key
+
+<% end %>

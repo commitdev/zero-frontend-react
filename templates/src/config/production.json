@@ -1,5 +1,6 @@
 {
     "appName": "<% .Name %>",
     "environment": "production",
-    "backendURL": "https://<% index .Params `productionBackendSubdomain` %><% index .Params `productionHostRoot` %>"
+    "backendURL": "https://<% index .Params `productionBackendSubdomain` %><% index .Params `productionHostRoot` %>"<%if eq (index .Params `billingEnabled`) "yes" %>,
+    "stripePublishableKey": "<% index .Params `productionStripePublicApiKey` %>"<% end %>
 }

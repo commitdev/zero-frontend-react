@@ -14,7 +14,10 @@ function AuthenticatedLinks() {
       <li>
         <Link to="/auth/profile">User Settings</Link>
       </li>
-      <li>
+      <%if eq (index .Params `billingEnabled`) "yes" %><li>
+        <Link to="/billing/products">Billing</Link>
+      </li>
+      <% end %><li>
         <Link to="/auth/logout">Logout</Link>
       </li>
     </React.Fragment>
@@ -57,7 +60,10 @@ function NavLinks() {
     <li>
       <Link to="/dashboard">Dashboard</Link>
     </li>
-  </ul>
+    <%if eq (index .Params `billingEnabled`) "yes" %><li>
+      <Link to="/billing/products">Billing</Link>
+    </li>
+  <% end %></ul>
 }
 <% end %>
 function Navigation() {
