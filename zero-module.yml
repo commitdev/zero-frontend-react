@@ -23,6 +23,7 @@ requiredCredentials:
 parameters:
   - field: useExistingAwsProfile
     label: "Use credentials from an existing AWS profile?"
+    info: "You can choose either a currently existing profile if you've already configured your AWS CLI, or manually enter a pair of AWS access keys."
     options:
       "yes": "Yes"
       "no": "No"
@@ -36,6 +37,7 @@ parameters:
       matchField: useExistingAwsProfile
   - field: accessKeyId
     label: AWS AccessKeyId
+    info: "AWS access is controlled by a pair of keys tied to a user account.\nhttps://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html "
     envVarName: "AWS_ACCESS_KEY_ID"
     conditions:
     - action: KeyMatchCondition
@@ -44,47 +46,58 @@ parameters:
   - field: secretAccessKey
     envVarName: "AWS_SECRET_ACCESS_KEY"
     label: AWS SecretAccessKey
+    info: "AWS access is controlled by a pair of keys tied to a user account.\nhttps://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html "
     conditions:
     - action: KeyMatchCondition
       whenValue: "no"
       matchField: useExistingAwsProfile
   - field: githubAccessToken
     label: "Github API Key to setup your repository and optionally CI/CD"
+    info: "This API key will let us set up new repositories to check in your code.\nhttps://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token"
     envVarName: GITHUB_ACCESS_TOKEN
   - field: region
     label: Select AWS Region
+    info: "This is the region your resources will be created in.\nMost regions have all the same features and functionality, but depending on your product you may need to choose a different region for data sovereignty reasons."
     options:
-      "us-west-2": "us-west-2 (Oregon)"
-      "us-east-1": "us-east-1 (N. Virginia)"
-      "us-east-2": "us-east-2 (Ohio)"
+      "us-east-1": "us-east-1 - US East (N. Virginia)"
+      "us-east-2": "us-east-2 - US East (Ohio)"
+      "us-west-2": "us-west-2 - US West (Oregon)"
+      "ca-central-1": "ca-central-1 - Canada (Central)"
+      "eu-west-1": "eu-west-1 - Europe (Ireland)"
+      "ap-southeast-1": "ap-southeast-1 - Asia Pacific (Singapore)"
   - field: productionHostRoot
-    label: Production Root Host Name (e.g. mydomain.com) - this must be the root of the chosen domain, not a subdomain.
+    label: Production Root Host Name (e.g. mydomain.com)
+    info: "This must be the root of the chosen domain, not a subdomain. You will also be prompted for the subdomains to use for your application."
     fieldValidation:
       type: regex
       value: '^([a-z0-9]+(-[a-z0-9]+)*\.{1})+[a-z]{2,}$'
       errorMessage: Invalid root domain name
   - field: productionFrontendSubdomain
     label: Production Frontend Host Name (e.g. app.)
+    info: "The subdomain that will point to the static assets of your frontend hosted in Cloudfront."
     default: app.
     fieldValidation:
       type: regex
       value: '^([a-z0-9]+(-[a-z0-9]+)*\.)$'
-      errorMessage: Invalid subdomain (cannot contain special chars & must end with a '.') 
+      errorMessage: Invalid subdomain (cannot contain special chars & must end with a '.')
   - field: productionBackendSubdomain
     label: Production Backend Host Name (e.g. api.)
+    info: "The subdomain that will point to the API of your backend running in Kubernetes."
     default: api.
     fieldValidation:
       type: regex
       value: '^([a-z0-9]+(-[a-z0-9]+)*\.)$'
       errorMessage: Invalid subdomain (cannot contain special chars & must end with a '.')
   - field: stagingHostRoot
-    label: Staging Root Host Name (e.g. mydomain-staging.com) - this must be the root of the chosen domain, not a subdomain.
+    label: Staging Root Host Name (e.g. mydomain-staging.com)
+    info: "This must be the root of the chosen domain, not a subdomain. You will also be prompted for the subdomains to use for your application.\nIt's recommended that you use different hostnames for staging and production instead of trying to have staging as a subdomain of your production domain."
     fieldValidation:
       type: regex
       value: '^([a-z0-9]+(-[a-z0-9]+)*\.{1})+[a-z]{2,}$'
       errorMessage: Invalid root domain name
   - field: stagingFrontendSubdomain
     label: Staging Frontend Host Name (e.g. app.)
+    info: "The subdomain that will point to the static assets of your frontend hosted in Cloudfront."
     default: app.
     fieldValidation:
       type: regex
@@ -92,6 +105,7 @@ parameters:
       errorMessage: Invalid subdomain (cannot contain special chars & must end with a '.')
   - field: stagingBackendSubdomain
     label: Staging Backend Host Name (e.g. api.)
+    info: "The subdomain that will point to the API of your backend running in Kubernetes."
     default: api.
     fieldValidation:
       type: regex
@@ -101,49 +115,57 @@ parameters:
     label: Random seed that will be shared between projects to come up with deterministic resource names
     execute: uuidgen | head -c 8
   - field: userAuth
-    label: Enable user management using Kratos and authentication using the Oathkeeper access proxy?
+    label: Enable user management and auth access proxy?
+    info: "This will enable infrastructure and application code that uses Kratos for user management and the Oathkeeper access proxy.\nhttps://ory.sh"
     default: yes
     options:
       "yes": "Yes"
       "no": "No"
   - field: CIVendor
-    label: Using either circleCI or github Actions to build / test your repository
+    label: Which CI vendor would you like to use?
+    info: "Build pipelines will be set up which will deploy your code to your infrastructure whenever PRs are merged to the main branch."
     default: "circleci"
     options:
-      "circleci": "CircleCi"
+      "circleci": "CircleCI"
       "github-actions": "Github Actions"
   - field: circleciApiKey
-    label: "Circle CI API Key to setup your CI/CD for repositories"
+    label: "CircleCI API Key"
+    info: "This will let us configure your CircleCI account to automatically enable CI for these newly created projects.\nhttps://circleci.com/docs/2.0/managing-api-tokens/"
     envVarName: CIRCLECI_API_KEY
     conditions:
     - action: KeyMatchCondition
       matchField: CIVendor
       whenValue: "circleci"
   - field: billingEnabled
-    label: "Provides a subscription example using stripe in backend and frontend repository"
+    label: "Enable billing support?"
+    info: "Provides a subscription example using stripe in the backend and frontend repositories."
     options:
       "yes": "Yes"
       "no": "No"
   - field: stagingStripePublicApiKey
-    label: "Staging Stripe public api key, used for frontend repository (Recommended: using sandbox key while setting up)"
+    label: "Staging Stripe public api key"
+    info: "Used for the frontend repository. It's recommended to use a sandbox key while getting set up."
     conditions:
     - action: KeyMatchCondition
       matchField: billingEnabled
       whenValue: "yes"
   - field: stagingStripeSecretApiKey
-    label: "Staging Stripe secret api key, used for backend repository (Recommended: using sandbox key while setting up)"
+    label: "Staging Stripe secret api key"
+    info: "Used for the backend repository. It's recommended to use a sandbox key while getting set up."
     conditions:
     - action: KeyMatchCondition
       matchField: billingEnabled
       whenValue: "yes"
   - field: productionStripePublicApiKey
-    label: "Production Stripe public api key, used for frontend repository (Recommended: using sandbox key while setting up)"
+    label: "Production Stripe public api key"
+    info: "Used for the frontend repository. It's recommended to use a sandbox key while getting set up."
     conditions:
     - action: KeyMatchCondition
       matchField: billingEnabled
       whenValue: "yes"
   - field: productionStripeSecretApiKey
-    label: "Production Stripe secret api key, used for backend repository (Recommended: using sandbox key while setting up)"
+    label: "Production Stripe secret api key"
+    info: "Used for the backend repository. It's recommended to use a sandbox key while getting set up."
     conditions:
     - action: KeyMatchCondition
       matchField: billingEnabled
