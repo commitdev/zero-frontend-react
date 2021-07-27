@@ -1,7 +1,7 @@
 import React<%if eq (index .Params `userAuth`) "yes" %>, { useContext }<% end %> from 'react'
 import { Link } from 'react-router-dom'
 <%if eq (index .Params `userAuth`) "yes" %> import { AuthContext } from '../context/AuthContext'  <% end %>
-import logo from '../commit-logo.png'
+import logo from '../logo.png'
 
 import './Navigation.css'
 <%if eq (index .Params `userAuth`) "yes" %>
