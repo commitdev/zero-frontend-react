@@ -1,7 +1,6 @@
 import React<%if eq (index .Params `userAuth`) "yes" %>, { useContext }<% end %> from 'react'
 import { Link } from 'react-router-dom'
 <%if eq (index .Params `userAuth`) "yes" %> import { AuthContext } from '../context/AuthContext'  <% end %>
-import logo from '../logo.png'
 
 import './Navigation.css'
 <%if eq (index .Params `userAuth`) "yes" %>
@@ -73,7 +72,7 @@ function Navigation() {
   return (
     <nav className="app-nav">
       <Link to="/" className="app-nav-logo">
-        <img src={logo} alt="logo" />
+        <img src="./logo192.png" alt="logo" />
       </Link>
 <%if eq (index .Params `userAuth`) "yes" %>
       <NavLinks {...state}/><% else if eq (index .Params `userAuth`) "no" %><NavLinks /><% end %>
