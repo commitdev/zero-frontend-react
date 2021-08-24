@@ -1,6 +1,6 @@
 SPDXVersion: SPDX-2.1
 DataLicense: CC0-1.0
-PackageName: zero-deployable-react-frontend
+PackageName: zero-frontend-react
 PackageOriginator: Commit
-PackageHomePage: https://github.com/commitdev/zero-deployable-react-frontend/
+PackageHomePage: https://github.com/commitdev/zero-frontend-react/
 PackageLicenseDeclared: Apache-2.0

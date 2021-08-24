@@ -1,4 +1,4 @@
-# Zero Deployable Frontend
+# Zero Frontend Application - React
 
 This is a [Zero] module which sets up a
 React web-app bundled statically served through CloudFront and S3 from the [zero-aws-eks-stack][zero-infra].
@@ -21,7 +21,7 @@ ___
 ```sh
 /   # file in the root directory is for initializing the user's repo and declaring metadata
 |-- Makefile                        #make command triggers the initialization of repository
-|-- zero-module.yml                 #module declares required parameters and 
+|-- zero-module.yml                 #module declares required parameters and
 |   # files in templates become the repo for users
 |   templates/
 |   |
@@ -67,7 +67,7 @@ Why is my frontend application not yet accesible?
 
 ### Backend Repo
 
-The corresponding backend for this app is [zero-deployable-backend].
+The corresponding backends for this app are [zero-backend-go] or [zero-backend-node].
 
 ## Other links
 
@@ -76,6 +76,7 @@ Project board: [zenhub][zenhub-board]
 <!-- Links -->
 [zero]: https://github.com/commitdev/zero
 [zero-infra]: https://github.com/commitdev/zero-aws-eks-stack
-[zero-deployable-backend]: https://github.com/commitdev/zero-deployable-backend
+[zero-backend-go]: https://github.com/commitdev/zero-backend-go
+[zero-backend-node]: https://github.com/commitdev/zero-backend-node
 
 [zenhub-board]: https://app.zenhub.com/workspaces/commit-zero-5da8decc7046a60001c6db44/board?filterLogic=any&repos=203630543,247773730,257676371,258369081

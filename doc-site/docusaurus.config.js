@@ -3,7 +3,7 @@ const { downloadCommonCustomCss, themeConfig, stylesheets, misc } = require('@co
 
 const siteUrl = process.env.BUILD_DOMAIN ? `https://${process.env.BUILD_DOMAIN}` : 'https://staging.getzero.dev';
 const baseUrl = '/docs/modules/frontend-react/';
-const repositoryName = 'zero-deployable-react-frontend';
+const repositoryName = 'zero-frontend-react';
 
 let customCss;
 try {

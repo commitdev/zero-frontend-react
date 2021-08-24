@@ -28,4 +28,4 @@ this is setup using the script [scripts/stripe-example-setup.sh][backend-stripe-
 ### Deployment
 The deployment requires the publishable key in the build, per environment you will have to provide `stripePublishableKey` in `config/<env>.json` [`production`/`staging`/`development`], then when CI builds it will create a bundle with the Stripe publishable API key
 
-[backend-stripe-setup-script]: https://github.com/commitdev/zero-deployable-backend/blob/main/templates/scripts/stripe-example-setup.sh
+[backend-stripe-setup-script]: https://github.com/commitdev/zero-backend-go/blob/main/templates/scripts/stripe-example-setup.sh
