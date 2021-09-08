@@ -1,6 +1,7 @@
 {
     "appName": "<% .Name %>",
     "environment": "production",
-    "backendURL": "https://<% index .Params `productionBackendSubdomain` %><% index .Params `productionHostRoot` %>"<%if eq (index .Params `billingEnabled`) "yes" %>,
+    "backendURL": "https://<% index .Params `productionBackendSubdomain` %><% index .Params `productionHostRoot` %>",
+    "authBackendURL": "https://<% index .Params `productionBackendSubdomain` %><% index .Params `productionHostRoot` %>"<%if eq (index .Params `billingEnabled`) "yes" %>,
     "stripePublishableKey": "<% index .Params `productionStripePublicApiKey` %>"<% end %>
 }

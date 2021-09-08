@@ -6,8 +6,8 @@ const capitalize = (str) => `${str[0].toUpperCase()}${str.slice(1)}`
  * Kratos redirects and sets cookie upon client lands on URL and redirects back to
  * frontend with request_id
  *  */
-const authPublicURL = `${config.backendURL}/.ory/kratos/public`;
-const authAdminURL = `${config.backendURL}/.ory/kratos`;
+const authPublicURL = `${config.authBackendURL}/.ory/kratos/public`;
+const authAdminURL = `${config.authBackendURL}/.ory/kratos`;
 
 /**
  * publicApi / adminApi are initialized Kratos SDK client with public / admin endpoints,

@@ -1,6 +1,10 @@
 {
     "appName": "<% .Name %>",
     "environment": "development",
-    "backendURL": "http://localhost:8080"<%if eq (index .Params `billingEnabled`) "yes" %>,
+    "backendURL": "http://localhost:8080"
+    <%- if eq (index .Params `billingEnabled`) "yes" %>,
+    "authBackendURL": "https://dev.<% index .Params `stagingHostRoot` %>",
+    <% end %>
+    <%- if eq (index .Params `billingEnabled`) "yes" %>,
     "stripePublishableKey": "<% index .Params `stagingStripePublicApiKey` %>"<% end %>
 }
