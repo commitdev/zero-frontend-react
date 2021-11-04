@@ -170,6 +170,12 @@ parameters:
     - action: KeyMatchCondition
       matchField: billingEnabled
       whenValue: "yes"
+  - field: serverless
+    label: "Use Lightweight Serverless setup instead of Kubernetes Cluster SaSS setup"
+    info: "Use Lightweight Serverless setup, less customizable but starts you off with a lighter weight setup."
+    options:
+      "no": "No"
+      "yes": "Yes"
 conditions:
   - action: ignoreFile
     matchField: userAuth
@@ -178,9 +184,8 @@ conditions:
     - src/components/AuthCheck.js
     - src/components/AuthForm.js
     - src/components/AuthForm.css
-    - src/pages/Auth.js
-    - src/pages/Auth.css
-    - src/pages/Logout.js
+    - src/pages/Auth/
+    - src/routes/Auth.js
     - src/api/
     - src/context/
   - action: ignoreFile
@@ -198,3 +203,17 @@ conditions:
     whenValue: "no"
     data:
     - src/pages/Billing
+  - action: ignoreFile
+    matchField: serverless
+    whenValue: "yes"
+    data:
+    - src/api/kratos.js
+    - src/pages/Auth/Form.js
+    - src/pages/Auth/Form.css
+    - src/components/AuthForm.js
+    - src/components/AuthForm.css
+  - action: ignoreFile
+    matchField: serverless
+    whenValue: "no"
+    data:
+    - src/api/serverless-auth.js

@@ -1,6 +1,9 @@
-import React, { useReducer, useEffect} from 'react'
-import { fetchAuthState } from '../api/kratos'
-
+import React, { useReducer, useEffect, /* useContext */} from 'react'
+<%- if eq (index .Params `serverless`) "yes" %>
+import { fetchAuthState, login, logout } from '../api/serverless-auth'
+<%- else %>
+import { fetchAuthState, login, logout } from '../api/kratos'
+<% end %>
 const SET_AUTH = 'set_auth'
 const LOGOUT_ACTION = 'logout'
 
@@ -46,18 +49,19 @@ function reducer(state, action) {
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState)
   const value = {
-    setAuth: payload => {
+    state,
+    setAuth: (payload) => {
       dispatch({type: SET_AUTH , payload })
     },
-    state,
+    logout,
+    login,
     dispatch,
   }
 
+
   useEffect(() => {
-    if (state.isLoading === true) {
-      fetchAuthState().then(value.setAuth);
-    }
-  });
+    fetchAuthState(value.setAuth);
+  }, [state.isLoading]); // eslint-disable-line
   return (
     <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
   );

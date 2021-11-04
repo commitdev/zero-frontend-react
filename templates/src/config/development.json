@@ -1,10 +1,15 @@
 {
     "appName": "<% .Name %>",
-    "environment": "development",
-    "backendURL": "http://localhost:8080"
-    <%- if eq (index .Params `billingEnabled`) "yes" %>,
+    "backendURL": "http://localhost:8080",
+    <%- if eq (index .Params `userAuth`) "yes" %>
+        <%- if eq (index .Params `serverless`) "yes" %>
+    "authBackendURL": "https://<% index .Params `stagingHostRoot` %>",
+        <%- else %>
     "authBackendURL": "https://dev.<% index .Params `stagingHostRoot` %>",
-    <% end %>
-    <%- if eq (index .Params `billingEnabled`) "yes" %>,
-    "stripePublishableKey": "<% index .Params `stagingStripePublicApiKey` %>"<% end %>
+        <%- end %>
+    <%- end %>
+    <%- if eq (index .Params `billingEnabled`) "yes" %>
+    "stripePublishableKey": "<% index .Params `stagingStripePublicApiKey` %>",
+    <%- end %>
+    "environment": "development"
 }

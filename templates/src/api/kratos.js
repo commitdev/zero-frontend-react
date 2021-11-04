@@ -31,6 +31,14 @@ const generateLogoutUrl = async () => {
   return authPublicURL + url;
 }
 
+const logout = async() => {
+  window.location = generateLogoutUrl();
+}
+
+const login = async() => {
+  window.location = `${config.authBackendURL}/auth`;
+}
+
 const generateFormRequestUrl = async (type) => {
   let { url } = await getBrowserFlowParams(capitalize(type));
   // Workaround for bug in SDK specs: https://github.com/ory/sdk/issues/43
@@ -71,9 +79,9 @@ const fetchRequestData = async (type = "login", flowId) => {
  * given a valid session's cookie, kratos will respond with session information
  * that includes whether session is active, checking it then formatting for authContext
  */
-const fetchAuthState = async() => {
+const fetchAuthState = async(dispatchSetAuth) => {
   const uri = await generateSessionUrl();
-  const options = {credentials: "include"};
+  const options = { credentials: "include" };
 
   const response = await fetch(uri, options);
   const authResult = await response.json();
@@ -94,11 +102,11 @@ const fetchAuthState = async() => {
       }
 } */
   const isLoggedIn = !!authResult.active
-  return {
+  dispatchSetAuth({
     isAuthenticated: isLoggedIn,
     user: authResult.identity?.id,
     email: authResult.identity?.traits?.email
-  };
+  });
 };
 
-export { fetchRequestData, fetchAuthState, generateFormRequestUrl, generateLogoutUrl }
+export { fetchRequestData, fetchAuthState, generateFormRequestUrl, generateLogoutUrl, logout, login }
