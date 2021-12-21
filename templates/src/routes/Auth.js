@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Switch, Route, Link } from 'react-router-dom'
 import Logout from '../pages/Auth/Logout'
 import Login from '../pages/Auth/Login'
-<%- if ne (index .Params `serverless`) "yes" %>
+<%- if ne (index .Params `backendApplicationHosting`) "serverless" %>
 import Auth from '../pages/Auth/Form'
 <% end %>
 
@@ -12,7 +12,7 @@ function AuthenticatedLinks() {
       <li>
         <Link to="/dashboard">Dashboard</Link>
       </li>
-      <%- if ne (index .Params `serverless`) "yes" %>
+      <%- if ne (index .Params `backendApplicationHosting`) "serverless" %>
       <li>
         <Link to="/auth/profile">User Settings</Link>
       </li>
@@ -30,7 +30,7 @@ function AuthenticatedLinks() {
 function UnauthenticatedLinks() {
   return (
     <React.Fragment>
-      <%- if ne (index .Params `serverless`) "yes" %>
+      <%- if ne (index .Params `backendApplicationHosting`) "serverless" %>
       <li>
         <Link to="/auth/registration">Sign Up</Link>
       </li>
@@ -42,7 +42,7 @@ function UnauthenticatedLinks() {
   )
 }
 
-<%- if eq (index .Params `serverless`) "yes" %>
+<%- if eq (index .Params `backendApplicationHosting`) "serverless" %>
 function AuthRoutes () {
   return (
     <Switch>

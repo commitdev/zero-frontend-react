@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect, /* useContext */} from 'react'
-<%- if eq (index .Params `serverless`) "yes" %>
+<%- if eq (index .Params `backendApplicationHosting`) "serverless" %>
 import { fetchAuthState, login, logout } from '../api/serverless-auth'
 <%- else %>
 import { fetchAuthState, login, logout } from '../api/kratos'

@@ -2,7 +2,7 @@
     "appName": "<% .Name %>",
     "backendURL": "http://localhost:8080",
     <%- if eq (index .Params `userAuth`) "yes" %>
-        <%- if eq (index .Params `serverless`) "yes" %>
+        <%- if eq (index .Params `backendApplicationHosting`) "serverless" %>
     "authBackendURL": "https://<% index .Params `stagingHostRoot` %>",
         <%- else %>
     "authBackendURL": "https://dev.<% index .Params `stagingHostRoot` %>",

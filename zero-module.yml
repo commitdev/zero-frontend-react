@@ -21,6 +21,13 @@ requiredCredentials:
   - github
 
 parameters:
+  - field: backendApplicationHosting
+    label: How do you want to host the backend of your application?
+    info: "Kubernetes is more complex and expensive, but significantly more feature-rich. The serverless approach can be cheaper but is limited in tooling.\nWe recommend Kubernetes for all but the most simple applications. See why: https://whyk8s.getzero.dev"
+    default: "kubernetes"
+    options:
+      "kubernetes": "Kubernetes using AWS EKS"
+      "serverless": "Serverless using AWS SAM/Lambda"
   - field: useExistingAwsProfile
     label: "Use credentials from an existing AWS profile?"
     info: "You can choose either a currently existing profile if you've already configured your AWS CLI, or manually enter a pair of AWS access keys."
@@ -170,12 +177,6 @@ parameters:
     - action: KeyMatchCondition
       matchField: billingEnabled
       whenValue: "yes"
-  - field: serverless
-    label: "Use Lightweight Serverless setup instead of Kubernetes Cluster SaSS setup"
-    info: "Use Lightweight Serverless setup, less customizable but starts you off with a lighter weight setup."
-    options:
-      "no": "No"
-      "yes": "Yes"
 conditions:
   - action: ignoreFile
     matchField: userAuth
@@ -185,7 +186,6 @@ conditions:
     - src/components/AuthForm.js
     - src/components/AuthForm.css
     - src/pages/Auth/
-    - src/routes/Auth.js
     - src/api/
     - src/context/
   - action: ignoreFile
@@ -203,17 +203,17 @@ conditions:
     whenValue: "no"
     data:
     - src/pages/Billing
+  # - action: ignoreFile
+  #   matchField: backendApplicationHosting
+  #   whenValue: "serverless"
+  #   data:
+  #   - src/api/kratos.js
+  #   - src/pages/Auth/Form.js
+  #   - src/pages/Auth/Form.css
+  #   - src/components/AuthForm.js
+  #   - src/components/AuthForm.css
   - action: ignoreFile
-    matchField: serverless
-    whenValue: "yes"
-    data:
-    - src/api/kratos.js
-    - src/pages/Auth/Form.js
-    - src/pages/Auth/Form.css
-    - src/components/AuthForm.js
-    - src/components/AuthForm.css
-  - action: ignoreFile
-    matchField: serverless
-    whenValue: "no"
+    matchField: backendApplicationHosting
+    whenValue: "kubernetes"
     data:
     - src/api/serverless-auth.js
