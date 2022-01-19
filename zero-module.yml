@@ -27,7 +27,7 @@ parameters:
     default: "kubernetes"
     options:
       "kubernetes": "Kubernetes using AWS EKS"
-      "serverless": "Serverless using AWS SAM/Lambda"
+      "serverless": "(BETA) Serverless using AWS SAM/Lambda"
   - field: useExistingAwsProfile
     label: "Use credentials from an existing AWS profile?"
     info: "You can choose either a currently existing profile if you've already configured your AWS CLI, or manually enter a pair of AWS access keys."
@@ -203,15 +203,6 @@ conditions:
     whenValue: "no"
     data:
     - src/pages/Billing
-  # - action: ignoreFile
-  #   matchField: backendApplicationHosting
-  #   whenValue: "serverless"
-  #   data:
-  #   - src/api/kratos.js
-  #   - src/pages/Auth/Form.js
-  #   - src/pages/Auth/Form.css
-  #   - src/components/AuthForm.js
-  #   - src/components/AuthForm.css
   - action: ignoreFile
     matchField: backendApplicationHosting
     whenValue: "kubernetes"
