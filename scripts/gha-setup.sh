@@ -27,8 +27,8 @@ EOF
 
 	## IMPORTANT: Set secret operates on the nearest .git repo even if you specify a different repository
 	pushd $PROJECT_DIR && \
-	gh secret set AWS_ACCESS_KEY_ID --repos="$GITHUB_REPO" --body="$AWS_ACCESS_KEY_ID" && \
-	gh secret set AWS_SECRET_ACCESS_KEY --repos="$GITHUB_REPO" --body="$AWS_SECRET_ACCESS_KEY" && \
+	gh secret set AWS_ACCESS_KEY_ID --repos="$GITHUB_ORG/$GITHUB_REPO" --body="$AWS_ACCESS_KEY_ID" && \
+	gh secret set AWS_SECRET_ACCESS_KEY --repos="$GITHUB_ORG/$GITHUB_REPO" --body="$AWS_SECRET_ACCESS_KEY" && \
 	popd
 
 	## Branch Protect for PRs
