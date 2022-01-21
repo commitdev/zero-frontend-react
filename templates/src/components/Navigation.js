@@ -44,7 +44,7 @@ function Navigation() {
   return (
     <nav className="app-nav">
       <Link to="/" className="app-nav-logo">
-        <img src="./logo192.png" alt="logo" />
+        <img src="/logo192.png" alt="logo" />
       </Link>
 <%if eq (index .Params `userAuth`) "yes" %>
       <NavLinks {...state}/><% else if eq (index .Params `userAuth`) "no" %><NavLinks /><% end %>
