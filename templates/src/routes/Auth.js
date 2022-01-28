@@ -1,8 +1,8 @@
 import React from 'react'
 import { BrowserRouter as Switch, Route, Link } from 'react-router-dom'
 import Logout from '../pages/Auth/Logout'
-import Login from '../pages/Auth/Login'
 <%- if ne (index .Params `backendApplicationHosting`) "serverless" %>
+import Login from '../pages/Auth/Login'
 import Auth from '../pages/Auth/Form'
 <% end %>
 
