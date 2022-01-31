@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import AuthForm from '../components/AuthForm'
-import Card from '../components/Card'
-import Logo from '../components/Logo'
-import { fetchRequestData, generateFormRequestUrl } from '../api/kratos'
+import AuthForm from '../../components/AuthForm'
+import Card from '../../components/Card'
+import Logo from '../../components/Logo'
+import { fetchRequestData, generateFormRequestUrl } from '../../api/kratos'
 
-import './Auth.css'
+import './Form.css'
 
 /**
  * AuthPage controller, this is the form wrapper to handle the request / error message

@@ -1,7 +1,7 @@
 name: zero-frontend-react
 description: 'Zero module for a single page application based on Create React App and deployed to S3/Cloudfront'
 author: 'Commit'
-zeroVersion: '>= 0.1.1'
+zeroVersion: '>= 0.2.1'
 commands:
   check: sh scripts/check.sh
 
@@ -21,6 +21,13 @@ requiredCredentials:
   - github
 
 parameters:
+  - field: backendApplicationHosting
+    label: How do you want to host the backend of your application?
+    info: "Kubernetes is more complex and expensive, but significantly more feature-rich. The serverless approach can be cheaper but is limited in tooling.\nWe recommend Kubernetes for all but the most simple applications. See why: https://whyk8s.getzero.dev"
+    default: "kubernetes"
+    options:
+      "kubernetes": "Kubernetes using AWS EKS"
+      "serverless": "(BETA) Serverless using AWS SAM/Lambda"
   - field: useExistingAwsProfile
     label: "Use credentials from an existing AWS profile?"
     info: "You can choose either a currently existing profile if you've already configured your AWS CLI, or manually enter a pair of AWS access keys."
@@ -178,9 +185,7 @@ conditions:
     - src/components/AuthCheck.js
     - src/components/AuthForm.js
     - src/components/AuthForm.css
-    - src/pages/Auth.js
-    - src/pages/Auth.css
-    - src/pages/Logout.js
+    - src/pages/Auth/
     - src/api/
     - src/context/
   - action: ignoreFile
@@ -198,3 +203,8 @@ conditions:
     whenValue: "no"
     data:
     - src/pages/Billing
+  - action: ignoreFile
+    matchField: backendApplicationHosting
+    whenValue: "kubernetes"
+    data:
+    - src/api/serverless-auth.js
